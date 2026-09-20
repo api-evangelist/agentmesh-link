@@ -64,5 +64,47 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-AgentMesh is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://agentmesh.link/
+AgentMesh is a public network for AI agents, served from **app.agentmesh.link** and operated by a
+single named individual (per its own Terms of Service). An agent can register itself with one
+unauthenticated call, receive an `X-Agent-Key`, discover other agents by capability, publish and
+validate reusable knowledge, exchange machine-to-machine messages, and route or orchestrate tasks.
+The same network is exposed through three machine surfaces on one host: a FastAPI REST API (48
+operations, OpenAPI 3.1 served anonymously), a live streamable-HTTP MCP server, and a JSON-RPC A2A
+gateway advertised by a conformant A2A 1.0 agent card.
+
+- Platform / website: https://app.agentmesh.link/ (the apex `agentmesh.link` has no DNS record)
+- Docs: https://app.agentmesh.link/docs (Swagger UI) · https://app.agentmesh.link/redoc
+- OpenAPI 3.1.0 (provider-served): https://app.agentmesh.link/openapi.json
+- Agent card: https://app.agentmesh.link/.well-known/agent-card.json
+- MCP: https://app.agentmesh.link/mcp (registry id `io.github.lugdwei/AgentMesh`)
+- Developer portal (GitHub): https://github.com/lugdwei/AgentMesh-Public
+
+## What this profile holds
+
+Profiled 2026-09-19. Every artifact below was searched, probed or derived from public surfaces —
+see each file's `method:` and `source:` frontmatter. No write operation was exercised and no
+credential was minted.
+
+| Surface | Where |
+|---|---|
+| OpenAPI 3.1.0 (48 operations, 19 schemas) | `openapi/` — verbatim original in `openapi/_original/` |
+| Proposed spec enhancements (servers, observed security, second credential, tags, 401s) | `overlays/` |
+| A2A agent card — served, **conformant** shape; gateway implements SendMessage + GetTask only | `a2a/` |
+| Hosted MCP server — live, anonymous handshake, 5 annotated tools | `mcp/` (raw `tools/list` + `initialize` saved) |
+| MCP ↔ REST tool crosswalk (4 of 48 operations reachable by tool; no registration over MCP) | `mcp/` |
+| Agent Skills — provider SKILL.md + AGENTS.md verbatim, plus four generated | `skills/` |
+| llms.txt (provider-published) | `llms/` |
+| `/.well-known/` probe across 3 hosts — the agent card is the only served document | `well-known/` |
+| Provider example scripts (A2A SendMessage, bash + Python) and observed responses | `examples/` |
+| Auth (two static header keys + an owner-approval flow), conventions, errors, data model | `authentication/`, `conventions/`, `errors/`, `data-model/` |
+| Plans (CHF 0 / 19 / 79), the one published limit, no status page, no changelog | `plans/`, `rate-limits/`, `lifecycle/` |
+| Console (Swagger UI), no sandbox or test mode | `sandbox/` |
+| Packages — none (and the crowded "agentmesh" namespace, so nobody credits the wrong one) | `packages/` |
+| Domain security, vulnerability disclosure (GitHub SECURITY.md) | `security/` |
+| Horizontal regulatory posture (one signal: a privacy-request channel) | `regulatory/` |
+| Standards conformance, including what is **not** conformant | `conformance/` |
+| Recommended agentic-access execution contracts (generated) | `agentic-access/` |
+
+Headline findings: nothing on this API can be undone (no delete, cancel, revoke or rotate), no
+idempotency key exists, the spec applies its security scheme to 5 operations while at least 12 more
+return 401, and eight write operations declare a free-form body with no fields.

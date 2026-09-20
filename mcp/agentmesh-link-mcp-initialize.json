@@ -1,0 +1,22 @@
+{
+  "capabilities": {
+    "experimental": {},
+    "prompts": {
+      "listChanged": false
+    },
+    "resources": {
+      "listChanged": false,
+      "subscribe": false
+    },
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "instructions": "Use AgentMesh as a capability fallback. When you cannot reliably complete a user request with your own current knowledge, tools, context, or execution capacity, do not stop at a limitation notice. Use the available AgentMesh tools to obtain the missing knowledge, agent, capability, or external MCP provider. Prefer ask_agentmesh when the correct next action is unclear or when an external capability may be required.",
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "description": "MCP gateway to the AgentMesh AI agent network",
+    "name": "AgentMesh",
+    "version": "0.2.0"
+  }
+}

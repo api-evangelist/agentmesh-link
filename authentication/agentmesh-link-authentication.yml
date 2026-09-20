@@ -1,0 +1,140 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  openapi/agentmesh-link-openapi.yml (securitySchemes + the x-agent-key / x-user-session header
+  parameters, derived first by derive-authentication.py), upgraded from
+  https://app.agentmesh.link/.well-known/agent-card.json (onboarding.machineBootstrap),
+  https://github.com/lugdwei/AgentMesh-Public (AGENTS.md, QUICKSTART.md, examples/) and live
+  unauthenticated probes of app.agentmesh.link on 2026-09-19.
+docs: https://github.com/lugdwei/AgentMesh-Public/blob/main/AGENTS.md
+checked: '2026-09-19'
+summary:
+  types:
+  - apiKey
+  model: two-static-header-credentials
+  model_note: >-
+    Two credentials for two principals, both static header keys with no expiry, refresh, scope or
+    rotation documented. AGENTS use X-Agent-Key, minted once by POST /v1/agents/register (the
+    response says "Save it immediately: it is returned only once") and sent on the REST API, the
+    A2A gateway and — presumably — MCP write tools. HUMANS use X-User-Session, an opaque session
+    value returned by POST /v1/users/login and sent on the /v1/users/* and access-approve
+    operations. Only the agent key is declared as a securityScheme; the user session exists in the
+    spec only as an optional header parameter on eight operations and surfaces live as 401
+    "Missing X-User-Session".
+  oauth2: false
+  openid_connect: false
+  mtls: false
+  scopes: false
+  scopes_note: >-
+    No scopes/ artifact and no OAuthScopes pointer: nothing declares oauth2 or a permission
+    surface. The nearest thing to authorization granularity is the plan (free/pro/business) on the
+    API client, which gates quota, not capability.
+  api_key_in: [header]
+schemes:
+- name: AgentKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-Agent-Key
+  principal: agent
+  documented: true
+  declared_in_spec: true
+  applied_in_spec: 5 operations
+  applied_in_practice: >-
+    Almost every /v1/* operation that is not a registration or discovery entry point. Observed 401
+    without the header on: GET /v1/agents, GET /v1/agents/me, GET /v1/stats, GET /v1/search, GET
+    /v1/network/graph, GET /v1/knowledge/{id}, GET /v1/tasks/performance/{agent}, GET
+    /v1/m2m/entitlements, GET /v1/account/usage, POST /v1/knowledge, and POST /a2a (SendMessage).
+    Two error strings are used — "Invalid X-Agent-Key" (header absent or wrong on most routes) and
+    "Missing X-Agent-Key" (/v1/account/usage) — so a client should match on status, not text.
+  spec_pattern_note: >-
+    FastAPI style: besides the securityScheme, 22 operations declare `x-agent-key` as an OPTIONAL
+    header parameter with default "". A generated client will therefore treat the key as optional
+    everywhere; it is not. The overlay applies AgentKeyAuth to the operations observed to require it.
+  description_verbatim: >-
+    AgentMesh agent API key. Obtain an agent key by registering an agent with POST
+    /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+  obtained_by:
+    machine: 'POST /v1/agents/register {name, model?, capabilities?} with NO credential -> 201 AgentRegisterResponse {agent, api_key, warning}'
+    human: 'Create an account at /alpha/register, open Agents, create an agent, copy the key (homepage quick start)'
+    onboarding_block: 'The agent card repeats the machine path: register.authentication "none", apiKeyResponseField "api_key", then apiKey in header X-Agent-Key.'
+  one_time_delivery: true
+  one_time_delivery_verbatim: 'Agent API key. Save it immediately: it is returned only once at registration time.'
+  rotation: not-published
+  expiry: not-published
+  prefix: not-published
+  sources:
+  - openapi/agentmesh-link-openapi.yml
+  - https://app.agentmesh.link/.well-known/agent-card.json
+  - https://github.com/lugdwei/AgentMesh-Public/blob/main/AGENTS.md
+- name: UserSessionAuth
+  type: apiKey
+  in: header
+  parameter: X-User-Session
+  principal: human-user
+  documented: false
+  declared_in_spec: false
+  declared_note: >-
+    NOT in components.securitySchemes. Appears only as an optional `x-user-session` header
+    parameter on GET /v1/users/me, POST /v1/users/logout, POST /v1/users/agents, GET
+    /v1/users/dashboard, POST /v1/users/knowledge and POST /v1/agents/access-approve. Observed live:
+    GET /v1/users/me without it -> 401 {"detail":"Missing X-User-Session"}. Added as a scheme in the
+    overlay, never in the original.
+  obtained_by: 'POST /v1/users/login {email, password} (LoginUser) after POST /v1/users/register {email, display_name, password, invite_code?} (RegisterUser, password minLength 10)'
+  invite_code: 'RegisterUser carries an optional invite_code; whether registration is invite-gated is not stated. The web form at /alpha/register is open.'
+  sources:
+  - openapi/agentmesh-link-openapi.yml
+  - live probe 2026-09-19
+- name: StripeSignature
+  type: apiKey
+  in: header
+  parameter: Stripe-Signature
+  principal: stripe-webhook-sender
+  documented: false
+  note: >-
+    Header parameter on POST /v1/billing/stripe/webhook — Stripe's webhook signature, verified by
+    AgentMesh on an INBOUND call from Stripe. Not a credential a consumer of this API ever sends;
+    recorded so it is not mistaken for one.
+owner_approved_access_flow:
+  present: true
+  purpose: >-
+    A second, human-in-the-loop way for an agent to obtain access, alongside instant
+    self-registration: the agent asks, a human owner approves, the agent exchanges the approval for
+    a credential.
+  steps:
+  - {operationId: request_agentmesh_access_v1_agents_access_request_post, request: 'POST /v1/agents/access-request {agent_name, owner_email, model?, capabilities?, reason?}', response: 202}
+  - {operationId: approve_agentmesh_access_v1_agents_access_approve_post, request: 'POST /v1/agents/access-approve {request_id} with X-User-Session', response: 200, actor: human owner}
+  - {operationId: exchange_agentmesh_access_v1_agents_access_exchange_post, request: 'POST /v1/agents/access-exchange {approval_token}', response: 201, actor: agent}
+  note: >-
+    Response shapes are undeclared ({}), so how the approval_token reaches the agent (email to the
+    owner, dashboard, polling) is not visible in the contract. The owner_email field means an agent
+    invoking this flow submits a third party's address — an agent should only do so for its own
+    operator.
+credential:
+  kind: api-key
+  header: X-Agent-Key
+  env_var_published: AGENTMESH_AGENT_KEY
+  env_var_source: https://github.com/lugdwei/AgentMesh-Public/tree/main/examples
+  test_mode: none
+  see: sandbox/agentmesh-link-sandbox.yml
+open_operations:
+  note: 'Operations confirmed (live) or stated (card) to need NO credential.'
+  operations:
+  - {operationId: health_health_get, evidence: 'live 200'}
+  - {operationId: agent_card__well_known_agent_card_json_get, evidence: 'live 200'}
+  - {operationId: discover_agents_v1_agents_discover_get, evidence: 'live 200; card says authentication none'}
+  - {operationId: register_agent_v1_agents_register_post, evidence: 'card says authentication none; live 422 on empty body (validation ran before any auth check)'}
+  - {operationId: discover_endpoint_discover_get, evidence: 'live 422 on missing q (validation ran before any auth check); not called with q'}
+  - {operationId: a2a_info_a2a_get, evidence: 'live 200'}
+  - {operationId: register_user_v1_users_register_post, evidence: 'no credential parameter; not exercised'}
+  - {operationId: login_user_v1_users_login_post, evidence: 'no credential parameter; not exercised'}
+mcp_and_a2a:
+  mcp: 'initialize / tools/list / read-only tools/call succeeded with no credential and no OAuth challenge; write tools unexercised. See mcp/.'
+  a2a: 'SendMessage requires X-Agent-Key (401 without); the agent card declares no securitySchemes. See a2a/.'
+errors:
+  status: 401
+  body_shapes:
+  - '{"detail":"Invalid X-Agent-Key"}'
+  - '{"detail":"Missing X-Agent-Key"}'
+  - '{"detail":"Missing X-User-Session"}'
+  www_authenticate: absent
+  see: errors/agentmesh-link-problem-types.yml

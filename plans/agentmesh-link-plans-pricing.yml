@@ -1,0 +1,96 @@
+generated: '2026-09-19'
+method: searched
+source: https://app.agentmesh.link/
+corroboration:
+  - https://github.com/lugdwei/AgentMesh-Public/blob/main/README.md
+  - https://github.com/lugdwei/AgentMesh-Public/blob/main/QUICKSTART.md
+  - https://app.agentmesh.link/llms.txt
+checked: '2026-09-19'
+summary: >-
+  Three named tiers priced in Swiss francs, published on the homepage (in French) and repeated in
+  English in the README, QUICKSTART and llms.txt: Free (CHF 0), Pro (CHF 19/month, "up to 100,000
+  API requests per month") and Business (CHF 79/month, "for teams and advanced AgentMesh usage").
+  There is no dedicated pricing page (/pricing 404s) and no published quota for the Free or
+  Business tier, so the only number in the whole pricing surface is Pro's monthly request cap.
+  Purchase is self-serve through a Stripe Checkout operation in the API; entitlements and usage
+  are readable through three API operations.
+plan_count: 3
+currency: CHF
+currency_note: >-
+  Swiss francs, written "19 CHF / mois" on the site and "CHF 19/month" in the repository. No other
+  currency is published.
+plans:
+  - name: Free
+    price: 0
+    currency: CHF
+    billing_period: none
+    included_quota: not-published
+    overage: not-published
+    limits: not-published
+    positioning_verbatim: 'Découvrez AgentMesh et connectez votre premier agent.'
+    positioning_en: 'Discover AgentMesh and connect your first agent.'
+    best_for_verbatim: Exploring
+    source: https://app.agentmesh.link/
+  - name: Pro
+    price: 19
+    currency: CHF
+    billing_period: month
+    included_quota: 100000
+    included_quota_unit: API requests per month
+    included_quota_verbatim: "Jusqu'à 100'000 requêtes API par mois."
+    overage: not-published
+    limits:
+      - {scope: per-account, window: month, limit: 100000, unit: API requests}
+    best_for_verbatim: Builders
+    source: https://app.agentmesh.link/
+  - name: Business
+    price: 79
+    currency: CHF
+    billing_period: month
+    included_quota: not-published
+    overage: not-published
+    limits: not-published
+    positioning_verbatim: 'Pour les équipes et les usages AgentMesh avancés.'
+    positioning_en: 'For teams and advanced AgentMesh usage.'
+    best_for_verbatim: Higher-scale use
+    source: https://app.agentmesh.link/
+enterprise:
+  available: not-published
+  note: No enterprise tier, sales contact or "contact us" path is published anywhere.
+purchase:
+  self_serve: true
+  processor: Stripe
+  api_operation: create_checkout_v1_billing_stripe_checkout_post
+  api_path: POST /v1/billing/stripe/checkout
+  request_schema: CheckoutRequest
+  webhook_operation: stripe_webhook_v1_billing_stripe_webhook_post
+  source: openapi/agentmesh-link-openapi.yml
+  note: >-
+    The plan is bought from inside the product: the OpenAPI carries a Stripe Checkout session
+    creator and an inbound Stripe webhook receiver (the latter is Stripe calling AgentMesh, not a
+    webhook AgentMesh offers to its own customers).
+entitlements_and_usage:
+  operations:
+    - {operationId: m2m_entitlements_v1_m2m_entitlements_get, path: 'GET /v1/m2m/entitlements'}
+    - {operationId: account_usage_v1_account_usage_get, path: 'GET /v1/account/usage'}
+    - {operationId: m2m_commercial_usage_v1_m2m_usage_get, path: 'GET /v1/m2m/usage'}
+  note: >-
+    A caller can read its own entitlement and usage over the API, which is the runtime signal a
+    monthly quota otherwise lacks (no rate-limit headers are emitted — see rate-limits/). The
+    response shapes are not declared in the spec (200 with an empty schema), so the fields are
+    unknown until called with a credential.
+  readiness_signal: >-
+    Free-tier self-registration by machine is published: the agent card's onboarding block and
+    POST /v1/agents/register both say authentication "none" for registration, so an agent can be
+    on the Free plan with a key in one call. The README calls the platform "V9 commercial
+    infrastructure" and the account area is still routed under /alpha/.
+access_gate:
+  self_serve_signup: open
+  human_signup: https://app.agentmesh.link/alpha/register
+  machine_signup: 'POST https://app.agentmesh.link/v1/agents/register (no credential; returns api_key)'
+  evidence:
+    - {url: 'https://app.agentmesh.link/alpha/register', status: 200, observed: 'French-language account creation form ("Créer un compte")'}
+    - {url: 'https://app.agentmesh.link/', status: 200, observed: 'Free / Pro / Business cards with CHF prices'}
+probes:
+  - {url: 'https://app.agentmesh.link/pricing', status: 404}
+  - {url: 'https://app.agentmesh.link/', status: 200}

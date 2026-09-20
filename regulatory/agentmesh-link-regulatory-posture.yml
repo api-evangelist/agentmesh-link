@@ -1,0 +1,132 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  Artifacts harvested this run (well-known/, security/, lifecycle/, conformance/), the provider's
+  two legal pages — https://app.agentmesh.link/privacy and https://app.agentmesh.link/terms (both
+  "Last updated: September 2026") — the GitHub SECURITY.md, robots.txt, and live probes of the
+  conventional regulatory paths on app.agentmesh.link on 2026-09-19.
+checked: '2026-09-19'
+harvest_only: true
+harvest_only_note: >-
+  This file records WHAT AgentMesh publishes. It does not decide which regimes reach the operator —
+  that is the Kin Score regime map's job, not this artifact's.
+summary: >-
+  A two-page legal surface written for an early-stage service run by an individual: a privacy
+  policy that describes what is processed and why, states data minimisation and a retention
+  principle without a period, discloses onward transmission to external agents/providers, and
+  names a channel for privacy requests; and Terms that disclaim availability and external results.
+  Exactly one horizontal signal carries substance — a data-subject-request channel — and it is a
+  bare email address. No subprocessor list, no DPA, no residency statement, no incident window, no
+  accessibility statement, no transparency report, no SBOM, no support-lifetime commitment, no GPC
+  statement, no AI-transparency page (the service is AI-adjacent infrastructure; its privacy policy
+  does describe agent/model interaction, which is not a transparency notice).
+signals:
+  data_subject_request:
+    present: true
+    pointer_type: DataSubjectRequest
+    url: https://app.agentmesh.link/privacy
+    location: 'Privacy Policy, section "Privacy requests"'
+    stated_verbatim: >-
+      "Questions or requests concerning information processed by AgentMesh may be sent to [contact
+      address]. Requests will be evaluated in light of the information available and applicable
+      legal requirements."
+    mechanism: email
+    contact_note: >-
+      The address is rendered through Cloudflare email protection (data-cfemail) and is not
+      reproduced here. It is the same single address the Terms name for all contact.
+    form: false
+    stated_timeline: not-published
+    rights_enumerated: false
+    substance_basis: >-
+      A named request channel with a stated handling commitment, in the policy itself — thin, but
+      the substance (where to send a request, that it will be evaluated) is present rather than the
+      word alone. Recorded as present with these caveats; a reader should weigh "bare email, no
+      timeline" accordingly.
+    probed: {url: 'https://app.agentmesh.link/privacy', status: 200}
+absent_signals:
+  subprocessors:
+    present: false
+    note: >-
+      The Privacy Policy says information "may be transmitted" to external agents, MCP providers,
+      tools or services a request requires, "under their own privacy policies" — a disclosure of
+      onward transfer, not a subprocessor list (no names, no dates, no infrastructure vendors;
+      Cloudflare and Stripe are observable but not listed).
+    probes: [{url: 'https://app.agentmesh.link/legal/subprocessors', status: 404}, {url: 'https://app.agentmesh.link/subprocessors', status: 404}]
+  data_residency:
+    present: false
+    note: 'No hosting region stated anywhere. Priced in CHF and written in French, which is not a residency statement.'
+    probes: [{url: 'https://app.agentmesh.link/docs/data-residency', status: 404}]
+  incident_notification:
+    present: false
+    note: 'Security section says technical safeguards are used and no system is absolutely secure; no notification commitment or window.'
+  retention_period:
+    present: false
+    note: >-
+      Retention is addressed — "for as long as reasonably necessary for operation, security,
+      troubleshooting and service integrity. Retention practices may evolve" — but no period is
+      stated, so nothing is normalised to a number.
+  accessibility_conformance:
+    present: false
+    probes: [{url: 'https://app.agentmesh.link/accessibility', status: 404}, {url: 'https://app.agentmesh.link/accessibility/vpat', status: 404}]
+  transparency_report:
+    present: false
+    probes: [{url: 'https://app.agentmesh.link/transparency', status: 404}]
+  ai_transparency:
+    present: false
+    note: >-
+      The policy describes that AI systems and agents submit and receive information and that
+      "discovery does not constitute authorization to execute" — an operating principle, not an
+      Article 50-style transparency notice. Not credited.
+    probes: [{url: 'https://app.agentmesh.link/ai', status: 404}, {url: 'https://app.agentmesh.link/ai/transparency', status: 404}]
+  training_data_summary: {present: false}
+  global_privacy_control:
+    present: false
+    note: 'No statement. Not tested by sending Sec-GPC, per the contract.'
+  sbom:
+    present: false
+    note: 'Never derived. No /security/sbom (404), no SBOM in the public repository.'
+    probes: [{url: 'https://app.agentmesh.link/security/sbom', status: 404}]
+  support_lifetime:
+    present: false
+    note: 'Terms: "under active development... continuous availability is not guaranteed." No support period.'
+  age_assurance: {present: false}
+  notice_and_action:
+    present: false
+    note: 'Terms prohibit misuse but publish no report-content channel.'
+    probes: [{url: 'https://app.agentmesh.link/legal/report-content', status: 404}]
+  exit_assistance:
+    present: false
+    note: 'No export/portability operation in the API and no documentation of one.'
+  dpa:
+    present: false
+    probes: [{url: 'https://app.agentmesh.link/legal/dpa', status: 404}, {url: 'https://app.agentmesh.link/dpa', status: 404}]
+  trust_center:
+    present: false
+    probes: [{url: 'https://app.agentmesh.link/trust', status: 404}]
+robots_content_signals:
+  file: https://app.agentmesh.link/robots.txt
+  directive_present: false
+  note: >-
+    Cloudflare's content-signals comment block (search / ai-input / ai-train definitions and the
+    EU 2019/790 Art. 4 reservation text) with NO Content-Signal line and no User-agent rule
+    following it. The provider has not expressed a policy; no pointer is emitted.
+operator_disclosure:
+  legal_entity: none-stated
+  note: >-
+    Both legal pages state the service "is operated by" a named individual and give one contact
+    address. No company name, registration number, jurisdiction or postal address is published, so
+    the governing law and the responsible legal person for any regime cannot be determined from
+    the site. Recorded because it is the first thing a compliance reader will look for.
+  source: https://app.agentmesh.link/terms
+security_program:
+  see: security/agentmesh-link-vulnerability-disclosure.yml
+  summary: 'GitHub SECURITY.md asks for private vulnerability reporting via GitHub; no security.txt, no bounty.'
+probes_summary:
+  all_conventional_paths_404: true
+  paths_probed: [/accessibility, /accessibility/vpat, /legal, /legal/subprocessors, /legal/dpa, /dpa, /subprocessors, /privacy/requests, /transparency, /trust, /security/sbom, /docs/data-residency, /ai, /ai/transparency, /legal/report-content, /.well-known/gpc.json]
+  note: 'Every path answered the host''s uniform 9-byte text/plain "Not Found"; a negative-control path answers the same, so these are true misses.'
+cross_links:
+  privacy_policy: https://app.agentmesh.link/privacy
+  terms: https://app.agentmesh.link/terms
+  security: security/agentmesh-link-vulnerability-disclosure.yml
+  lifecycle: lifecycle/agentmesh-link-lifecycle.yml

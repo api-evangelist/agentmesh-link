@@ -1,0 +1,105 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  openapi/agentmesh-link-openapi.yml (info.version, path naming), https://app.agentmesh.link/health,
+  https://app.agentmesh.link/terms, https://github.com/lugdwei/AgentMesh-Public (README "Status",
+  commit history) and https://registry.modelcontextprotocol.io/v0/servers?search=agentmesh.
+checked: '2026-09-19'
+summary: >-
+  A pre-1.0 service with no lifecycle policy of any kind. There is no status page (only a /health
+  JSON endpoint), no changelog, no deprecation policy, no Sunset or Deprecation headers, no SLA and
+  no support window; the Terms say plainly that the service "is under active development", that
+  features "may change" and that "continuous availability is not guaranteed". Versioning is a /v1
+  path prefix plus info.version 0.2.0 — and the paths themselves leak internal algorithm
+  generations (route-v7, route-v90-memory, route_v10, knowledge-v90), which is the clearest
+  lifecycle signal in the whole surface: the routing layer has been rewritten many times and the
+  old entry points are still public. No StatusPage, Deprecation or ChangeLog pointer is emitted.
+versioning:
+  scheme: path-prefix-plus-info-version
+  api_path: /v1/
+  api_path_note: >-
+    44 of 48 operations live under /v1/. The four outside it are /health, /discover,
+    /.well-known/agent-card.json and /a2a (GET+POST), plus the /alpha/* web pages.
+  spec_version: 0.2.0
+  spec_version_sources:
+    - 'openapi info.version: 0.2.0'
+    - '/health: {"status":"ok","service":"agentmesh","version":"0.2.0"}'
+    - 'agent card version: 0.2.0'
+    - 'MCP serverInfo.version: 0.2.0'
+    - 'README: "Public API version: 0.2.0"'
+  spec_version_note: 'Below 1.0 across every surface — an explicit pre-stable signal, consistently reported.'
+  internal_generation_leak:
+    observed_paths:
+      - {path: 'POST /v1/tasks/route', operationId: route_v10_task_v1_tasks_route_post, note: 'operationId says v10; the path does not'}
+      - {path: 'POST /v1/tasks/route-v7', operationId: route_v7_v1_tasks_route_v7_post}
+      - {path: 'POST /v1/tasks/route-v90-memory', operationId: route_v90_memory_v1_tasks_route_v90_memory_post}
+      - {path: 'POST /v1/knowledge/transfer', operationId: transfer_persistent_resilient_v1_knowledge_transfer_post, tag: knowledge-v90}
+    reading: >-
+      Three routing generations (v7, v10, v90) are simultaneously public with no documented
+      difference, no default and no deprecation marker on any of them. A caller cannot tell which
+      is current from the contract. The README's "AgentMesh V9 commercial infrastructure" and the
+      knowledge-v90 tag suggest v90 is the newest. This is an observation about the contract, not a
+      provider statement.
+  breaking_change_policy: not-published
+  pinning: not-applicable
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations_in_spec: 0
+  note: >-
+    No operation carries deprecated: true, despite three generations of the same routing endpoint
+    coexisting. No policy text anywhere describes notice periods or retirement.
+status_page:
+  published: false
+  health_endpoint:
+    url: https://app.agentmesh.link/health
+    status: 200
+    body: '{"status":"ok","service":"agentmesh","version":"0.2.0"}'
+    note: >-
+      A liveness probe, not a status page: no history, no incidents, no component list, no
+      subscription. The README's "Status: LIVE" line links to this endpoint. Not credited as
+      StatusPage.
+  probes:
+    - {url: 'https://app.agentmesh.link/status', status: 404}
+    - {url: 'https://app.agentmesh.link/status.json', status: 404}
+changelog:
+  published: false
+  probes:
+    - {url: 'https://app.agentmesh.link/changelog', status: 404}
+    - {url: 'https://raw.githubusercontent.com/lugdwei/AgentMesh-Public/main/CHANGELOG.md', status: 404}
+  nearest_equivalent:
+    - source: https://github.com/lugdwei/AgentMesh-Public/commits/main
+      note: >-
+        Five commits between 2026-09-06 and 2026-09-07 (public security policy, validated A2A
+        integration docs, two SendMessage examples, the machine integration skill). Documentation
+        history, not an API changelog.
+    - source: https://registry.modelcontextprotocol.io/v0/servers?search=agentmesh
+      note: 'MCP registry versions 0.2.0 (2026-09-08) and 0.2.1 (2026-09-09) while the live server still reports 0.2.0.'
+sla:
+  published: false
+  terms_verbatim: >-
+    "AgentMesh is under active development. Features may change and the service may be updated,
+    interrupted or temporarily unavailable. Continuous availability is not guaranteed."
+  source: https://app.agentmesh.link/terms
+support_window:
+  published: false
+operator:
+  note: >-
+    The Terms of Service and Privacy Policy (both "Last updated: September 2026") state that
+    AgentMesh is operated by a named individual rather than a registered company, with a single
+    contact address (Cloudflare email-protected in the HTML; not reproduced here). That is
+    relevant to lifecycle because there is no legal entity, no team page and no second maintainer
+    behind the service — a bus-factor signal a buyer should weigh alongside the missing SLA.
+  source: https://app.agentmesh.link/terms
+timeline:
+  - {date: '2026-08-29', event: 'Earliest agent record visible on the network (created_at of the one agent answering discover?capability=search)'}
+  - {date: '2026-09-06', event: 'AgentMesh-Public repository created'}
+  - {date: '2026-09-07', event: 'SKILL.md, AGENTS.md, examples published'}
+  - {date: '2026-09-08', event: 'Listed in the official MCP registry (0.2.0)'}
+  - {date: '2026-09-09', event: 'MCP registry entry bumped to 0.2.1'}
+  - {date: '2026-09-19', event: 'Surfaced by the a2aregistry.org harvest; profiled here'}
+cross_links:
+  changelog: none
+  plans: plans/agentmesh-link-plans-pricing.yml
+  conventions: conventions/agentmesh-link-conventions.yml

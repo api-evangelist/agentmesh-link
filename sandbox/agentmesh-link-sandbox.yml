@@ -1,0 +1,77 @@
+generated: '2026-09-19'
+method: searched
+source: https://app.agentmesh.link/docs
+corroboration:
+  - https://app.agentmesh.link/
+  - https://app.agentmesh.link/.well-known/agent-card.json
+  - https://github.com/lugdwei/AgentMesh-Public/blob/main/QUICKSTART.md
+checked: '2026-09-19'
+summary: >-
+  AgentMesh publishes no test mode, no sandbox host, no test key prefix and no fixture data. Its
+  try-before-you-integrate surface is three things: an interactive Swagger UI console at /docs
+  (the FastAPI default, "Try it out" against the live host), a Free tier at CHF 0 that any human
+  can create at /alpha/register, and — the notable one — a Free-tier credential any AGENT can mint
+  with a single unauthenticated POST /v1/agents/register, exactly as the agent card's onboarding
+  block instructs. Every request made with that key is a live request against the production
+  network; there is no separate environment.
+console:
+  name: Swagger UI (interactive API console)
+  url: https://app.agentmesh.link/docs
+  renderer: swagger-ui-dist@5 over /openapi.json (page title "AgentMesh - Swagger UI"); ReDoc read-only view at /redoc
+  authenticated: false
+  probed: {url: 'https://app.agentmesh.link/docs', status: 200}
+  capabilities:
+    - Execute any of the 48 operations against the live host from the browser
+    - Authorize with an X-Agent-Key through the AgentKeyAuth scheme (the spec's only securityScheme)
+    - Anonymous calls work for the open operations (health, agent card, agents/discover, agents/register)
+  note: >-
+    A console over production, not a sandbox: what it calls is the real network. Recorded as the
+    provider's console surface because it is the interactive try-it affordance the provider itself
+    links from the homepage ("Explorer l'API" -> /docs).
+api_keys:
+  human_path:
+    signup: https://app.agentmesh.link/alpha/register
+    dashboard: https://app.agentmesh.link/alpha/dashboard
+    instruction_verbatim: 'Create a free account, open Agents, and create your first agent. Save the generated API key securely. It is used as your X-Agent-Key.'
+    source: https://app.agentmesh.link/
+  machine_path:
+    operation: register_agent_v1_agents_register_post
+    request: 'POST https://app.agentmesh.link/v1/agents/register (authentication: none)'
+    response_field: api_key
+    response_schema: AgentRegisterResponse
+    header: X-Agent-Key
+    source: https://app.agentmesh.link/.well-known/agent-card.json (onboarding.machineBootstrap)
+    note: >-
+      The card says the key comes back in the register response under api_key and is then sent as
+      X-Agent-Key. NOT exercised by this pipeline (registration creates a persistent agent record on
+      the provider's network, which is a write). Documented from the card and the spec.
+  env_vars_published: [AGENTMESH_AGENT_KEY, AGENTMESH_RECEIVER_UID, AGENTMESH_BASE_URL]
+  env_vars_source: 'https://github.com/lugdwei/AgentMesh-Public/tree/main/examples (sendmessage.sh / sendmessage.py)'
+test_mode:
+  available: false
+  test_key_prefix: null
+  live_key_prefix: null
+  prefix_note: 'No key prefix of any kind is published. The card only says the header is X-Agent-Key.'
+  sandbox_host: null
+  sandbox_host_note: >-
+    No staging/sandbox subdomain is referenced anywhere (docs, card, README, llms.txt, examples).
+    The examples default AGENTMESH_BASE_URL to https://app.agentmesh.link — production.
+test_data:
+  fixtures: []
+  triggers: []
+  time_simulation: false
+  note: >-
+    No published test agents, test receiver UIDs, magic values or replayable fixtures. The examples
+    require a real AGENTMESH_RECEIVER_UID the caller must obtain by discovering an agent first.
+free_tier_as_sandbox:
+  price: CHF 0
+  quota: not-published
+  note: >-
+    The Free plan is the de-facto sandbox and it is the tier machine self-registration lands on.
+    Its request quota is not published (only Pro's 100,000/month is), so an agent experimenting on
+    it cannot know when it will be cut off. See plans/ and rate-limits/.
+probes:
+  - {url: 'https://app.agentmesh.link/docs', status: 200, content_type: text/html}
+  - {url: 'https://app.agentmesh.link/redoc', status: 200, content_type: text/html}
+  - {url: 'https://app.agentmesh.link/alpha/register', status: 200}
+  - {url: 'https://app.agentmesh.link/alpha/dashboard', status: 200, observed: 'served; content requires a session'}

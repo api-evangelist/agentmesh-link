@@ -1,0 +1,76 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  Registry metadata read unauthenticated on 2026-09-19 — registry.npmjs.org search, pypi.org/pypi
+  JSON for agentmesh / agentmesh-link / agentmesh-sdk / agentmesh-client — plus the
+  github.com/lugdwei account listing (2 public repositories) and the official MCP registry.
+checked: '2026-09-19'
+summary:
+  first_party_package_count: 0
+  official_client_sdk_count: 0
+  third_party_package_count: 0
+  note: >-
+    AgentMesh ships NO client library, CLI or package on any registry. Its published integration
+    surface is HTTP-native by design: the OpenAPI, the MCP endpoint, the A2A gateway, and two
+    dependency-free example scripts (bash+curl and Python urllib) in the public GitHub repository.
+    No Packages or SDKs pointer is emitted in apis.yml — an empty package list is recorded here so
+    the absence reads as checked rather than unchecked.
+github:
+  found: true
+  kind: personal-account
+  url: https://github.com/lugdwei
+  login: lugdwei
+  public_repos: 2
+  repositories:
+    - name: AgentMesh-Public
+      url: https://github.com/lugdwei/AgentMesh-Public
+      description: Public developer portal for the AgentMesh AI agent network
+      created: '2026-09-06'
+      pushed: '2026-09-07'
+      license: none-declared
+      stars: 0
+      contents: [README.md, AGENTS.md, SKILL.md, QUICKSTART.md, SECURITY.md, llms.txt, examples/sendmessage.py, examples/sendmessage.sh]
+      note: Documentation and two example scripts; no library code. Saved verbatim in skills/ and examples/provider/.
+    - name: agentfinder-catalog
+      url: https://github.com/lugdwei/agentfinder-catalog
+      note: >-
+        A fork/copy of GitHub's Agent Finder (Agentic Resource Discovery) community catalog, not an
+        AgentMesh package — most likely staged to submit AgentMesh to that catalog. Recorded so a
+        later round does not read it as a client library.
+  private_backend: >-
+    The provider states the production backend is private ("The AgentMesh production backend stays
+    private. This repository is deliberately public..."). The MCP registry entry points at
+    github.com/lugdwei/AgentMesh, which 404s.
+packages: []
+examples_in_lieu_of_sdk:
+  - file: ../examples/provider/agentmesh-link-sendmessage.sh
+    language: bash
+    dependencies: [curl, python3 (for JSON encoding)]
+    source: https://raw.githubusercontent.com/lugdwei/AgentMesh-Public/main/examples/sendmessage.sh
+  - file: ../examples/provider/agentmesh-link-sendmessage.py
+    language: python
+    dependencies: [standard library only (urllib.request, json, os)]
+    source: https://raw.githubusercontent.com/lugdwei/AgentMesh-Public/main/examples/sendmessage.py
+name_collision_watch:
+  note: >-
+    "agentmesh" is a crowded name. NONE of the following belongs to app.agentmesh.link and none may
+    be recorded here as a first-party package in a later round without evidence tying it to the
+    lugdwei account or the agentmesh.link domain.
+  npm:
+    - {name: '@agentmesh/sdk', owner: amitaykeisar, product: 'P2P encrypted messenger for AI agents (github.com/agentmesh/agentmesh)'}
+    - {name: '@microsoft/agentmesh-sdk', owner: microsoft, product: 'Microsoft agent-governance-toolkit'}
+    - {name: '@microsoft/agentmesh-api', owner: microsoft}
+    - {name: '@microsoft/agentmesh-mcp-proxy', owner: microsoft}
+    - {name: '@agentmeshhq/agent', owner: therajushahi}
+    - {name: '@agentmeshworld/sdk', owner: Tomeku-Development}
+    - {name: n8n-nodes-agentmesh, owner: xapanyun}
+    - {name: opencode-agentmesh, owner: polatdev}
+  pypi:
+    - {name: agentmesh, owner: Aboyai Inc, note: 'name-reservation placeholder, homepage agentmesh.org'}
+    - {name: agentmesh-sdk, owner: Minimal Future, product: 'github.com/MinimalFuture/AgentMesh multi-agent framework'}
+    - {name: agentmesh-client, owner: onassis-ctrl}
+    - {name: agentmesh-link, status: 404}
+  mcp_registry:
+    - {name: ai.agentmesh/mesh, domain: agentmesh.ai}
+    - {name: help.agentmesh/agentmesh, domain: agentmesh.help}
+    - {name: io.github.lugdwei/AgentMesh, domain: app.agentmesh.link, this_provider: true}

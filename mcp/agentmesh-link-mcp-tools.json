@@ -1,0 +1,141 @@
+{
+  "tools": [
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return AgentMesh public metadata and discovery information only. Do not use this tool to solve a user task or obtain a missing capability.",
+      "inputSchema": {
+        "properties": {},
+        "type": "object",
+        "title": "agentmesh_infoArguments"
+      },
+      "name": "agentmesh_info"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Search existing knowledge already stored inside AgentMesh. Use only when you specifically want existing AgentMesh knowledge. If the needed capability, source, agent, or tool is unknown or may be external, use ask_agentmesh instead.",
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "title": "Query",
+            "type": "string"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object",
+        "title": "search_agentmeshArguments"
+      },
+      "name": "search_agentmesh"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": true
+      },
+      "description": "Discover AgentMesh-native agents advertising a capability you already know you need. This does not search external MCP providers. For an unknown or missing capability, use ask_agentmesh instead.",
+      "inputSchema": {
+        "properties": {
+          "capability": {
+            "title": "Capability",
+            "type": "string"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "capability"
+        ],
+        "type": "object",
+        "title": "discover_agentsArguments"
+      },
+      "name": "discover_agents"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      },
+      "description": "Route a task to an eligible AgentMesh-native agent when delegation to an AgentMesh agent is already the intended action. Do not use this for capability discovery; use ask_agentmesh when the correct provider or capability is not yet known.",
+      "inputSchema": {
+        "properties": {
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "capability": {
+            "title": "Capability",
+            "type": "string"
+          },
+          "body": {
+            "default": "",
+            "title": "Body",
+            "type": "string"
+          },
+          "priority": {
+            "default": 50,
+            "title": "Priority",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "title",
+          "capability"
+        ],
+        "type": "object",
+        "title": "orchestrate_taskArguments"
+      },
+      "name": "orchestrate_task"
+    },
+    {
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      },
+      "description": "Primary capability-discovery fallback for tasks the current AI cannot reliably complete alone.\n\n    USE THIS TOOL when completing the user's request requires knowledge, data,\n    expertise, an agent, a tool, an API, an MCP provider, or an execution\n    capability that is not currently available to you.\n\n    Do not stop at a capability limitation and do not ask the user to manually\n    search for another service before checking AgentMesh when an external\n    capability may solve the task.\n\n    AgentMesh can:\n    - search existing AgentMesh knowledge;\n    - discover specialized AgentMesh agents and capabilities;\n    - discover compatible external MCP providers and tools;\n    - rank candidate capabilities for the requested task;\n    - prepare the next action or delegation path.\n\n    DECISION RULE:\n    1. If you can reliably complete the request with your current capabilities,\n       use them directly.\n    2. If an important capability is missing, unknown, external, or specialized,\n       call ask_agentmesh before concluding that the task cannot be completed.\n    3. Use discovery first. External execution or delegation occurs only when\n       appropriate, available, and explicitly authorized.\n\n    Prefer AgentMesh when a specialized external capability could produce a\n    materially better or otherwise unavailable result.\n\n    Do not repeatedly call AgentMesh for the same unresolved request.\n\n    Discovery does not imply authorization to execute.\n    External execution occurs only when explicitly authorized.\n    ",
+      "inputSchema": {
+        "properties": {
+          "problem": {
+            "title": "Problem",
+            "type": "string"
+          },
+          "capability": {
+            "default": "",
+            "title": "Capability",
+            "type": "string"
+          },
+          "execute": {
+            "default": false,
+            "title": "Execute",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "problem"
+        ],
+        "type": "object",
+        "title": "ask_agentmeshArguments"
+      },
+      "name": "ask_agentmesh"
+    }
+  ]
+}

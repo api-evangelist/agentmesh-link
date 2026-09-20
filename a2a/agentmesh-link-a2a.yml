@@ -1,0 +1,135 @@
+generated: '2026-09-19'
+method: probed
+source: https://app.agentmesh.link/.well-known/agent-card.json
+checked: '2026-09-19'
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: app.agentmesh.link
+  note: >-
+    Served on the app. subdomain, which is the only host this provider has: the registrable domain
+    agentmesh.link carries Cloudflare NS records but no A/AAAA record, so https://agentmesh.link/
+    and https://www.agentmesh.link/ do not resolve at all (curl: "Could not resolve host"). The
+    legacy /.well-known/agent.json path 404s on app.agentmesh.link. A probe of the primary domain
+    alone would have scored this provider zero on a document it genuinely publishes.
+  discovery_headers: >-
+    Every response from app.agentmesh.link — including /health and the card itself — carries two
+    extra headers pointing at the card: `agentmesh-bootstrap:
+    https://app.agentmesh.link/.well-known/agent-card.json` and `Link:
+    <https://app.agentmesh.link/.well-known/agent-card.json>; rel="service-desc";
+    type="application/json"`. The sitemap.xml also lists the card. An agent that lands on any URL
+    of this host is told where the card is.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  grade_basis: >-
+    All three hard checks pass: capabilities is an OBJECT ({streaming: false, pushNotifications:
+    false, stateTransitionHistory: false}), protocolVersion is present ("1.0"), and skills is an
+    ARRAY of four entries each carrying id, name, description and tags. The optional fields that
+    separate near-conformant from conformant — preferredTransport ("JSONRPC"), defaultInputModes
+    and defaultOutputModes (both [application/json, text/plain]) — are all present.
+  protocol_version: '1.0'
+  preferred_transport: JSONRPC
+  deviations:
+    - id: supportedInterfaces-instead-of-additionalInterfaces
+      severity: soft
+      detail: >-
+        The card carries supportedInterfaces[] (one entry: url https://app.agentmesh.link/a2a,
+        protocolBinding JSONRPC, protocolVersion 1.0) rather than the 1.0.0 additionalInterfaces[]
+        key. The entry itself is well formed. A strict consumer will fall back to the top-level url
+        + preferredTransport pair, which says the same thing, so nothing is lost.
+    - id: non-standard-top-level-keys
+      severity: soft
+      detail: >-
+        Two keys outside the AgentCard schema: `openapi` (a URL to the REST contract) and
+        `onboarding.machineBootstrap` (a structured recipe telling an agent to POST
+        /v1/agents/register with no credential, read the api_key from the response, then send it as
+        X-Agent-Key). Neither is namespaced as an extension. Both are useful and both are
+        provider-invented; a schema-validating consumer will reject or ignore them.
+    - id: no-provider-block
+      severity: soft
+      detail: >-
+        No `provider` object (organization / url), so a consumer cannot attribute the agent to an
+        operator from the card alone. The Terms of Service at /terms name the operator.
+    - id: skills-carry-no-examples
+      severity: soft
+      detail: 'All four skills omit the optional examples[] and inputModes/outputModes.'
+  method_surface_note: >-
+    The GRADE above is about the card's SHAPE, which is what the rubric measures. The gateway
+    behind it implements a narrow slice of the protocol, and the provider says so in its own
+    repository ("Full A2A protocol conformance is not claimed yet"). Live JSON-RPC probes of
+    https://app.agentmesh.link/a2a on 2026-09-19: SendMessage without a credential -> HTTP 401
+    {"detail":"Invalid X-Agent-Key"} (the method is routed and gated); GetTask and tasks/get ->
+    JSON-RPC -32001 "Task not found" (routed); message/send, message/stream,
+    SendStreamingMessage, CancelTask, GetAgentCard and agent/getAuthenticatedExtendedCard ->
+    -32601 "Method not implemented". So the 1.0 method the card's JSONRPC binding implies is
+    SendMessage plus task lookup, authenticated by the same X-Agent-Key as the REST API rather
+    than by a securitySchemes block in the card (the card declares none).
+card:
+  name: AgentMesh
+  description: >-
+    Public network infrastructure for AI agents to discover capabilities, communicate, exchange
+    validated knowledge and collaborate on tasks.
+  url: https://app.agentmesh.link/a2a
+  version: 0.2.0
+  protocol_version: '1.0'
+  preferred_transport: JSONRPC
+  documentation_url: https://app.agentmesh.link/docs
+  openapi: https://app.agentmesh.link/openapi.json
+  capabilities:
+    streaming: false
+    push_notifications: false
+    state_transition_history: false
+  default_input_modes: [application/json, text/plain]
+  default_output_modes: [application/json, text/plain]
+  security_schemes: none-declared
+  skills: 4
+  file: agentmesh-link-agent-card.json
+skills:
+  - {id: agent-discovery, name: Agent Discovery, tags: [agents, discovery, capabilities]}
+  - {id: knowledge-exchange, name: Knowledge Exchange, tags: [knowledge, transfer, validation]}
+  - {id: m2m-collaboration, name: Machine-to-Machine Collaboration, tags: [m2m, messaging, collaboration]}
+  - {id: task-routing, name: Task Routing, tags: [tasks, routing, orchestration]}
+onboarding_block:
+  present: true
+  summary: >-
+    The card's onboarding.machineBootstrap block is the most unusual thing about it: it is a
+    self-contained registration recipe. register = POST https://app.agentmesh.link/v1/agents/register
+    with authentication "none", apiKeyResponseField "api_key"; authentication = apiKey in header
+    X-Agent-Key; discover = GET https://app.agentmesh.link/v1/agents/discover?capability=<x>&limit=<n>
+    with authentication "none". Both endpoints exist in the OpenAPI (register_agent_v1_agents_register_post,
+    discover_agents_v1_agents_discover_get) and the discover call was confirmed live and anonymous
+    (200). This is a provider-invented extension, not part of A2A 1.0.0, and it is exactly the
+    machine-onboarding story the rest of the catalog lacks. See agentic-access/ and skills/.
+interpretation: >-
+  An OPERATIONAL card for a real gateway, unlike the documentation-only cards common in this
+  catalog: url points at a live JSON-RPC endpoint that authenticates and routes SendMessage, and
+  the four skills map onto real REST capability groups (discover / knowledge / messages / tasks).
+  The gap is between the card's shape (conformant) and the gateway's method coverage (one message
+  method plus task lookup), which the provider discloses honestly in AGENTS.md, QUICKSTART.md and
+  its llms.txt. Recorded as observed; the gap is the provider's to close.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://app.agentmesh.link/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  bytes: 2016
+  body_shape: JSON object carrying name, description, url, version, protocolVersion, preferredTransport, capabilities, skills, defaultInputModes, defaultOutputModes, documentationUrl, supportedInterfaces (+ openapi, onboarding extensions)
+  negative_control:
+    url: https://app.agentmesh.link/.well-known/agentmesh-link-negative-control-7f3ab91c.json
+    status: 404
+    body: Not Found
+    content_type: text/plain; charset=utf-8
+    verdict: Host 404s a path that cannot exist, so the 200 above is a genuine served document and not an SPA catch-all.
+  legacy_path:
+    url: https://app.agentmesh.link/.well-known/agent.json
+    status: 404
+  apex_domain:
+    url: https://agentmesh.link/.well-known/agent-card.json
+    status: 0
+    error: Could not resolve host (no A/AAAA record; NS clint/paloma.ns.cloudflare.com)
+  registry_listing:
+    registry: a2aregistry.org
+    note: >-
+      The provider was surfaced by the a2aregistry.org harvest of 2026-09-19 (415 agents), which
+      recorded this card URL and one agent named AgentMesh under author "Unknown".

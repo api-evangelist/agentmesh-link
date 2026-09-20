@@ -1,0 +1,187 @@
+generated: '2026-09-19'
+method: probed
+source: live probes of the named /.well-known/ path list on every AgentMesh host
+checked: '2026-09-19'
+summary: >-
+  One real document is served: the A2A Agent Card at the canonical /.well-known/agent-card.json on
+  app.agentmesh.link (2,016 bytes, application/json, graded conformant in a2a/). Nothing else on the
+  named list is served anywhere — no RFC 9116 security.txt, no OIDC discovery, no RFC 8414 / RFC
+  9728 OAuth metadata (the MCP server is on this same host, so the MCP-host probe is the same
+  probe), no api-catalog, no ai-plugin.json, no AAuth resource document, no UCP/ACP, and no
+  apis.json index at either domain-root path. The registrable domain and its www. host do not
+  resolve at all, so they contribute status 0 rows rather than 404s.
+pointer_basis: >-
+  WellKnown is emitted on the strength of the served agent card. SecurityTxt is NOT emitted: no
+  security.txt is served on any host. The agent card is registered separately as AgentCard via
+  a2a/agentmesh-link-a2a.yml.
+host_set_note: >-
+  Five roles, ONE host. The registrable domain (agentmesh.link), its www., the API baseURL, the
+  OpenAPI servers[] host (added by us — the served spec declares none), the docs/console host, the
+  MCP server host and the A2A gateway host are all app.agentmesh.link, because the provider runs a
+  single FastAPI application. The apex and www. rows below are recorded so the absence is visible,
+  not inferred.
+hosts:
+  - host: https://app.agentmesh.link
+    roles: [api, docs, console, mcp, a2a, website]
+    documents:
+      - path: /.well-known/agent-card.json           # A2A 1.0.0 / RFC 8615
+        status: 200
+        file: ../a2a/agentmesh-link-agent-card.json
+        content_type: application/json
+        bytes: 2016
+        note: >-
+          Real AgentCard-shaped JSON object (protocolVersion 1.0, four skills, JSONRPC binding).
+          Graded in a2a/agentmesh-link-a2a.yml. Also advertised by an `agentmesh-bootstrap` header
+          and a `Link: rel="service-desc"` header on every response from this host, and listed in
+          /sitemap.xml.
+      - path: /.well-known/agent.json
+        status: 404
+        body: Not Found
+      - path: /.well-known/security.txt              # RFC 9116
+        status: 404
+        body: Not Found
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server   # RFC 8414
+        status: 404
+      - path: /.well-known/oauth-protected-resource     # RFC 9728 — this is also the MCP resource host
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/api-catalog.json
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/aauth-resource.json
+        status: 404
+      - path: /.well-known/ucp.json
+        status: 404
+      - path: /.well-known/acp.json
+        status: 404
+      - path: /.well-known/apis.json
+        status: 404
+      - path: /apis.json
+        status: 404
+      - path: /apis.yml
+        status: 404
+      - path: /.well-known/mcp.json
+        status: 404
+    soft_404_control:
+      path: /.well-known/agentmesh-link-negative-control-7f3ab91c.json
+      status: 404
+      bytes: 9
+      content_type: text/plain; charset=utf-8
+      body: Not Found
+      verdict: >-
+        Clean 404. Every miss on this host is a 9-byte text/plain "Not Found" (a router-level 404
+        in front of the FastAPI app, which would otherwise answer {"detail":"Not Found"}), so the
+        agent-card 200 is a genuine served document.
+    path_echo_control: passed
+    hit_count: 1
+    other_discovery_documents:
+      - path: /llms.txt
+        status: 200
+        content_type: text/plain; charset=utf-8
+        bytes: 790
+        file: ../llms/agentmesh-link-llms.txt
+        note: Provider-authored llms.txt naming the card, the OpenAPI, the MCP endpoint and the MCP registry id.
+      - path: /openapi.json
+        status: 200
+        content_type: application/json
+        bytes: 32781
+        file: ../openapi/_original/agentmesh-link-openapi.json
+      - path: /sitemap.xml
+        status: 200
+        content_type: application/xml
+        note: 'Four URLs: /, /docs, /openapi.json, /.well-known/agent-card.json.'
+      - path: /robots.txt
+        status: 200
+        content_type: text/plain; charset=utf-8
+        bytes: 1248
+        content_signal: false
+        note: >-
+          Contains ONLY Cloudflare's "content signals" boilerplate comment block (search / ai-input
+          / ai-train definitions and the EU 2019/790 Article 4 reservation notice). No User-agent,
+          Disallow, Allow or Content-Signal directive follows it, so the file expresses no policy
+          and no ContentSignal pointer is emitted.
+      - path: /health
+        status: 200
+        content_type: application/json
+        body: '{"status":"ok","service":"agentmesh","version":"0.2.0"}'
+  - host: https://agentmesh.link
+    roles: [registrable-domain]
+    resolves: false
+    dns: 'NS clint.ns.cloudflare.com / paloma.ns.cloudflare.com; no A, AAAA or MX record'
+    documents:
+      - {path: /.well-known/agent-card.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/agent.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/security.txt, status: 0, error: Could not resolve host}
+      - {path: /.well-known/openid-configuration, status: 0, error: Could not resolve host}
+      - {path: /.well-known/oauth-authorization-server, status: 0, error: Could not resolve host}
+      - {path: /.well-known/oauth-protected-resource, status: 0, error: Could not resolve host}
+      - {path: /.well-known/api-catalog, status: 0, error: Could not resolve host}
+      - {path: /.well-known/api-catalog.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/ai-plugin.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/aauth-resource.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/ucp.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/acp.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/apis.json, status: 0, error: Could not resolve host}
+      - {path: /apis.json, status: 0, error: Could not resolve host}
+      - {path: /apis.yml, status: 0, error: Could not resolve host}
+    hit_count: 0
+    note: >-
+      The harvest stub's Website pointer was https://agentmesh.link/, which nobody can load. Replaced
+      in apis.yml with https://app.agentmesh.link/, the host the provider itself calls "Platform" and
+      "website" (README, llms.txt, and the agentmesh_info MCP tool's own response).
+  - host: https://www.agentmesh.link
+    roles: [www]
+    resolves: false
+    documents:
+      - {path: /.well-known/agent-card.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/security.txt, status: 0, error: Could not resolve host}
+      - {path: /.well-known/openid-configuration, status: 0, error: Could not resolve host}
+      - {path: /.well-known/oauth-authorization-server, status: 0, error: Could not resolve host}
+      - {path: /.well-known/oauth-protected-resource, status: 0, error: Could not resolve host}
+      - {path: /.well-known/api-catalog, status: 0, error: Could not resolve host}
+      - {path: /.well-known/ai-plugin.json, status: 0, error: Could not resolve host}
+      - {path: /.well-known/apis.json, status: 0, error: Could not resolve host}
+      - {path: /apis.json, status: 0, error: Could not resolve host}
+    hit_count: 0
+security_txt:
+  served: false
+  hosts_probed: [app.agentmesh.link, agentmesh.link, www.agentmesh.link]
+  note: >-
+    No RFC 9116 document anywhere. The only published security-reporting instruction is the
+    SECURITY.md in the GitHub developer-portal repository, which asks for GitHub private
+    vulnerability reporting — see security/agentmesh-link-vulnerability-disclosure.yml. Serving a
+    security.txt with that same instruction at https://app.agentmesh.link/.well-known/security.txt
+    is a one-file fix.
+a2a:
+  agent_card_found: true
+  host: app.agentmesh.link
+  path: /.well-known/agent-card.json
+  canonical_path: true
+  artifact: ../a2a/agentmesh-link-a2a.yml
+  hosts_probed: [app.agentmesh.link, agentmesh.link, www.agentmesh.link]
+  paths_probed: [/.well-known/agent-card.json, /.well-known/agent.json]
+  checked: '2026-09-19'
+mcp_host:
+  host: app.agentmesh.link
+  endpoint: https://app.agentmesh.link/mcp
+  same_as_primary: true
+  protected_resource_metadata: false
+  authorization_server_metadata: false
+  note: >-
+    RFC 9728 puts protected-resource metadata on the resource server; here that is the same host as
+    everything else and it 404s both /.well-known/oauth-protected-resource and
+    /.well-known/oauth-authorization-server. Consistent with what was observed: the MCP server
+    accepts initialize / tools/list / a read-only tools/call with no credential and no OAuth
+    challenge, so there is no delegated-identity flow to advertise.
+apis_json:
+  found: false
+  paths_probed: [/.well-known/apis.json, /apis.json, /apis.yml]
+  hosts_probed: [app.agentmesh.link, agentmesh.link, www.agentmesh.link]
+aauth:
+  found: false
+  path: /.well-known/aauth-resource.json
+  note: 404 on the only resolving host. Auth is a static X-Agent-Key header (see authentication/).

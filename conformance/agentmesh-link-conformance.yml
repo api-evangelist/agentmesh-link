@@ -1,0 +1,167 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  openapi/agentmesh-link-openapi.yml (live from https://app.agentmesh.link/openapi.json),
+  well-known/agentmesh-link-well-known.yml (live /.well-known/ probes), a2a/agentmesh-link-a2a.yml
+  (live card + JSON-RPC method probes), mcp/agentmesh-link-mcp.yml (live initialize + tools/list),
+  https://app.agentmesh.link/llms.txt and the provider's own AGENTS.md / SKILL.md.
+checked: '2026-09-19'
+summary: >-
+  AgentMesh conforms to the machine-discovery specifications an agent needs to FIND it — OpenAPI
+  3.1.0, MCP 2025-06-18 (verified handshake), an A2A 1.0.0 agent card graded conformant, llms.txt,
+  and an MCP registry listing — and to almost none of the HTTP conventions a client needs at
+  runtime: no servers[], securitySchemes defined but applied to 5 of 48 operations while at least
+  9 more are gated in practice, no RFC 9457 problem details, no RFC 9116 security.txt, no OAuth /
+  OIDC discovery, no RFC 8594 sunset signalling, no rate-limit fields, no idempotency mechanism.
+  The A2A gateway behind the conformant card implements SendMessage and task lookup only, which
+  the provider discloses. No domain standard beyond A2A/MCP applies to an agent network, and none
+  is claimed.
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    https://app.agentmesh.link/openapi.json returns a valid OpenAPI 3.1.0 document anonymously
+    (48 operations over 47 paths, 19 components.schemas, 1 securityScheme). FastAPI-generated;
+    saved verbatim at openapi/_original/agentmesh-link-openapi.json. Advertised by the agent card
+    (`openapi` key), llms.txt, sitemap.xml, README and AGENTS.md.
+- id: openapi-servers-declared
+  conforms: false
+  evidence: >-
+    No servers[] block in the served document. The host is stated in AGENTS.md ("Base URL:
+    https://app.agentmesh.link") and in the card; added in openapi/agentmesh-link-openapi.yml and
+    overlays/agentmesh-link-openapi-overlay.yaml, never in the original.
+- id: openapi-security-applied
+  conforms: partial
+  evidence: >-
+    components.securitySchemes.AgentKeyAuth (apiKey, header X-Agent-Key) is defined with a good
+    description, but it is applied to only 5 operations (publish_v1_knowledge_post,
+    send_agent_message_v1_messages_send_post, agent_inbox_v1_messages_inbox_get,
+    route_v10_task_v1_tasks_route_post, orchestrate_multi_agent_v1_tasks_orchestrate_post) and
+    there is no root security. Live unauthenticated probes returned 401 {"detail":"Invalid
+    X-Agent-Key"} on GET /v1/stats, GET /v1/agents/me, GET /v1/search, GET /v1/network/graph and
+    POST /a2a SendMessage — none of which declare security. The spec under-states its own gate.
+- id: openapi-operations-tagged
+  conforms: partial
+  evidence: >-
+    14 of 48 operations carry tags (alpha-web 4, users 6, billing 2, user-knowledge 1,
+    knowledge-v90 1) and there is no root tags[]. The 34 agent-facing operations — register,
+    discover, knowledge, messages, tasks, m2m, network — are untagged, so a generated reference
+    lumps the whole product under "default".
+- id: openapi-operation-summaries
+  conforms: partial
+  evidence: >-
+    Every operation has an auto-generated summary from its function name ("Register Agent", "M2M
+    Dispatch"); almost none has a description. A few requestBody schema properties carry
+    descriptions. No operation-level or schema-level examples exist anywhere in the document.
+- id: openapi-operationids-unique
+  conforms: true
+  evidence: 48 unique operationIds (FastAPI's function_path_method form). Verbose but unambiguous.
+- id: openapi-responses-declared
+  conforms: partial
+  evidence: >-
+    Every operation declares a 2xx (200/201/202) and, where it has inputs, a 422 with the
+    HTTPValidationError schema. No 401, 403, 404, 409 or 429 is declared on any operation, although
+    401 and 404 are observed live. Most 2xx responses carry an empty schema ({}), so response
+    shapes are undocumented for ~40 of 48 operations.
+- id: openapi-examples-in-spec
+  conforms: false
+  evidence: 'Zero `example`/`examples` keys in the entire document. See examples/ for observed examples.'
+- id: mcp-2025-06-18
+  conforms: true
+  evidence: >-
+    https://app.agentmesh.link/mcp completed initialize (protocolVersion 2025-06-18 echoed back),
+    issued an mcp-session-id, accepted notifications/initialized (202) and answered tools/list with
+    five tools carrying inputSchema and annotations. Streamable HTTP with SSE-framed responses.
+    Listed in the official MCP registry as io.github.lugdwei/AgentMesh.
+- id: mcp-tool-annotations
+  conforms: true
+  evidence: 'All five tools carry readOnlyHint / destructiveHint / openWorldHint annotations — rarer than it should be.'
+- id: a2a-1.0-agent-card
+  conforms: true
+  evidence: >-
+    Card at /.well-known/agent-card.json: protocolVersion "1.0", capabilities is an object, skills
+    is a 4-entry array, preferredTransport JSONRPC, default input/output modes present. Graded
+    conformant in a2a/agentmesh-link-a2a.yml; soft deviations recorded there (supportedInterfaces
+    key, non-namespaced extensions, no provider block).
+- id: a2a-1.0-jsonrpc-methods
+  conforms: partial
+  evidence: >-
+    Live JSON-RPC probes: SendMessage is routed and gated (401 without X-Agent-Key); GetTask /
+    tasks/get are routed (-32001 Task not found); message/send, message/stream,
+    SendStreamingMessage, CancelTask, GetAgentCard and agent/getAuthenticatedExtendedCard return
+    -32601 Method not implemented. The provider states "Full A2A protocol conformance is not
+    claimed yet" (AGENTS.md, QUICKSTART.md, llms.txt). Streaming and push are declared false in
+    the card, which is honest.
+- id: a2a-card-security-schemes
+  conforms: false
+  evidence: >-
+    The card declares no securitySchemes / security, yet SendMessage requires the X-Agent-Key
+    header. An A2A client reading only the card cannot learn how to authenticate; it has to read
+    AGENTS.md or the OpenAPI.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://app.agentmesh.link/llms.txt (200, 790 bytes) — H1, blockquote summary, Machine
+    Discovery / Autonomous Onboarding / Network sections. Two of its lines ("MCP:", "MCP Registry:")
+    are not list items, a formatting slip. A second, longer llms.txt lives in the GitHub repo.
+- id: rfc-8615-well-known
+  conforms: partial
+  evidence: 'One well-known document served (the agent card). See well-known/.'
+- id: rfc-9116-security-txt
+  conforms: false
+  evidence: '/.well-known/security.txt 404 on the only resolving host. Disclosure instruction lives only in GitHub SECURITY.md.'
+- id: rfc-9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are FastAPI's {"detail": ...} — a string for auth failures ("Invalid X-Agent-Key"), an
+    array of {type, loc, msg, input} for 422. application/json, never application/problem+json; no
+    type URI, title or instance. See errors/.
+- id: oauth2
+  conforms: false
+  evidence: 'No oauth2 securityScheme, no /.well-known/oauth-authorization-server (404). Auth is a static header key.'
+- id: oidc
+  conforms: false
+  evidence: '/.well-known/openid-configuration 404.'
+- id: rfc-9728-protected-resource-metadata
+  conforms: false
+  evidence: '/.well-known/oauth-protected-resource 404 on the MCP host (which is the primary host).'
+- id: rfc-8594-sunset
+  conforms: false
+  evidence: 'No Sunset/Deprecation header, no deprecated flag on any operation, while three routing generations coexist. See lifecycle/.'
+- id: ietf-ratelimit-headers
+  conforms: false
+  evidence: 'No RateLimit / X-RateLimit / Retry-After header on any observed response; no 429 in the spec. See rate-limits/.'
+- id: idempotency-key
+  conforms: false
+  evidence: 'No Idempotency-Key parameter on any of the 23 POST operations and no replay-protection mechanism documented. See conventions/.'
+- id: pagination-convention
+  conforms: partial
+  evidence: >-
+    A `limit` query parameter (default 20) on GET /v1/agents/discover and the MCP tools (default
+    10); no cursor, offset or page parameter and no next-link in observed responses
+    (discover returns {capability, count, agents[]}). Bounded lists, not paginated ones.
+- id: json-api
+  conforms: false
+  evidence: 'Plain JSON objects, no JSON:API envelope or media type.'
+- id: apis-json
+  conforms: false
+  evidence: '/apis.json, /apis.yml and /.well-known/apis.json all 404.'
+- id: cloudflare-content-signals
+  conforms: false
+  evidence: >-
+    robots.txt carries Cloudflare's content-signals explanatory comment block but no Content-Signal
+    directive and no User-agent rule, so it expresses no policy on search / ai-input / ai-train.
+domain_standard:
+  applies: reward-only
+  market: agent networks / agent interoperability
+  candidates_checked:
+    - {standard: A2A 1.0.0, declared_in_contract: true, evidence: 'agent card protocolVersion 1.0 + JSONRPC gateway', status: 'partial method coverage, conformant card'}
+    - {standard: MCP 2025-06-18, declared_in_contract: true, evidence: 'initialize echoes 2025-06-18; five annotated tools', status: conformant}
+    - {standard: 'Agentic Resource Discovery (ARD)', declared_in_contract: false, evidence: 'The lugdwei account holds a copy of GitHub agentfinder-catalog, but no ARD document is served by app.agentmesh.link', status: none}
+  note: >-
+    There is no sector regulator or industry data standard (SCIM, OData, HL7, ISO 20022...) for an
+    agent-collaboration network; A2A and MCP are the interoperability standards of this market and
+    are recorded above as protocol conformance. Nothing is invented to fill the slot.
+compliance_programs:
+  published: false
+  note: 'No SOC 2 / ISO 27001 / GDPR-programme claim anywhere; no trust center. No Compliance pointer is emitted.'

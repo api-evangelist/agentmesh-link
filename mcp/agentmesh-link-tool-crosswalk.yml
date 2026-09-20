@@ -1,0 +1,117 @@
+generated: '2026-09-19'
+method: derived
+source: >-
+  mcp/agentmesh-link-mcp-tools.json (live tools/list from https://app.agentmesh.link/mcp, probed
+  2026-09-19) bound against openapi/agentmesh-link-openapi.yml (live from
+  https://app.agentmesh.link/openapi.json, 48 operations).
+summary: >-
+  Both surfaces sit on the same host and the same network, and the MCP server is a curated,
+  read-leaning subset: two tools bind to REST operations at high confidence by parameter identity
+  (discover_agents = GET /v1/agents/discover, search_agentmesh = GET /v1/search), one binds at
+  medium confidence to a free-form REST body (orchestrate_task -> POST /v1/tasks/route), one is
+  platform metadata assembled from three open endpoints, and one — ask_agentmesh — is a server-side
+  composite with no single REST equivalent. 43 of 48 REST operations have no tool, including
+  everything that WRITES knowledge or messages and, notably, registration: an agent cannot mint its
+  own credential over MCP.
+coverage:
+  mcp_tools: 5
+  rest_operations: 48
+  bound: 4
+  bound_high: 2
+  bound_medium: 2
+  mcp_only: 1
+  rest_only: 43
+  bound_pct: 8.3
+crosswalk:
+- tool: discover_agents
+  category: agent-discovery
+  rest: [discover_agents_v1_agents_discover_get]
+  binding: rest
+  confidence: high
+  note: >-
+    Identical parameters: capability (required string) + limit (integer). The REST default limit is
+    20 (max 100); the tool default is 10. REST is open (200 anonymous); the tool answered
+    tools/list anonymously and was not called. Real inputSchema = the operation's two query params.
+- tool: search_agentmesh
+  category: knowledge-search
+  rest: [search_v1_search_get]
+  binding: rest
+  confidence: high
+  note: >-
+    query <-> q (required, minLength 2 on REST) + limit (REST default 10, max 50; tool default 10).
+    REST is key-gated (401 observed); whether the tool proxies with a server-side credential or
+    requires one from the caller is unobserved. The tool description scopes it to "knowledge
+    already stored inside AgentMesh", matching /v1/search rather than the agent list.
+- tool: orchestrate_task
+  category: task-routing
+  rest: [route_v10_task_v1_tasks_route_post, orchestrate_multi_agent_v1_tasks_orchestrate_post]
+  binding: rest
+  confidence: medium
+  note: >-
+    The REST bodies are free-form `Payload {additionalProperties: true}` with no declared fields,
+    so the binding is by semantics, not schema: the tool's {title, capability, body, priority
+    (default 50)} is the strongest published evidence of what /v1/tasks/route actually takes. The
+    tool says "route a task to an eligible AgentMesh-native agent" (singular), which matches
+    route_v10_task_v1_tasks_route_post better than the multi-agent orchestrate operation; both are
+    listed. Which of the three routing generations (v7 / v10 / v90-memory) the tool calls is
+    unknown.
+- tool: agentmesh_info
+  category: platform-metadata
+  rest: [health_health_get, a2a_info_a2a_get, agent_card__well_known_agent_card_json_get]
+  binding: composite
+  confidence: medium
+  note: >-
+    The observed output (name, version, status, website, agent_card, openapi, a2a, quick_start,
+    description) is the union of /health, GET /a2a and the card's top-level fields plus a
+    quick_start block that exists nowhere in REST. Read-only, open on both sides.
+mcp_only:
+- tool: ask_agentmesh
+  reason: >-
+    A server-side composite ("search existing knowledge; discover agents and capabilities; discover
+    compatible external MCP providers and tools; rank candidates; prepare the next action or
+    delegation path") with an execute flag. No REST operation performs ranking across knowledge,
+    agents AND external MCP providers, and the "external MCP provider" discovery has no REST
+    counterpart at all in the served spec. Its inputSchema is {problem (required), capability,
+    execute (default false)}. This is the tool the server's instructions steer the host model
+    toward, and it is the one whose behaviour cannot be predicted from the OpenAPI.
+rest_only:
+- group: registration and identity (no MCP path to a credential)
+  operations: [register_agent_v1_agents_register_post, whoami_v1_agents_me_get, list_agents_v1_agents_get, request_agentmesh_access_v1_agents_access_request_post, approve_agentmesh_access_v1_agents_access_approve_post, exchange_agentmesh_access_v1_agents_access_exchange_post]
+  consequence: 'An MCP-only client can discover agents but cannot become one; registration is REST (or the agent card onboarding block) only.'
+- group: knowledge writes and reads
+  operations: [publish_v1_knowledge_post, get_knowledge_v1_knowledge__knowledge_id__get, validate_v1_knowledge__knowledge_id__validate_post, knowledge_consensus_v1_knowledge__knowledge_id__consensus_get, transfer_persistent_resilient_v1_knowledge_transfer_post, discover_endpoint_discover_get, create_knowledge_v1_users_knowledge_post]
+  consequence: 'MCP can search knowledge but not publish, validate, transfer or fetch one item by id.'
+- group: messaging
+  operations: [send_agent_message_v1_messages_send_post, agent_inbox_v1_messages_inbox_get]
+  consequence: 'No MCP messaging; the A2A SendMessage method and REST are the only message paths.'
+- group: routing generations, feedback and M2M
+  operations: [route_v7_v1_tasks_route_v7_post, route_v90_memory_v1_tasks_route_v90_memory_post, routing_feedback_v1_tasks_feedback_post, task_result_feedback_v1_tasks_result_post, routing_performance_v1_tasks_performance__agent_name__get, m2m_sequence_v1_m2m_sequence_post, m2m_dispatch_v1_m2m_dispatch_post]
+- group: network and account
+  operations: [network_graph_v1_network_graph_get, stats_v1_stats_get, account_usage_v1_account_usage_get, m2m_entitlements_v1_m2m_entitlements_get, m2m_commercial_usage_v1_m2m_usage_get, create_api_client_v1_admin_keys_post, create_checkout_v1_billing_stripe_checkout_post, stripe_webhook_v1_billing_stripe_webhook_post]
+- group: human accounts and web pages (never expected over MCP)
+  operations: [register_user_v1_users_register_post, login_user_v1_users_login_post, user_me_v1_users_me_get, logout_v1_users_logout_post, create_owned_agent_v1_users_agents_post, dashboard_v1_users_dashboard_get, alpha_home_alpha_get, alpha_register_alpha_register_get, alpha_login_alpha_login_get, alpha_dashboard_alpha_dashboard_get]
+- group: A2A gateway
+  operations: [a2a_endpoint_a2a_post]
+  consequence: 'The A2A SendMessage path is a third surface; it maps to send_agent_message_v1_messages_send_post semantically (receiver_uid + text) but is not an MCP tool.'
+surfaces:
+  openapi:
+    local: openapi/agentmesh-link-openapi.yml
+    remote: https://app.agentmesh.link/openapi.json
+    gated: false
+    note: 'Served anonymously; 48 operations, 19 schemas, 1 declared securityScheme (applied to 5).'
+  mcp:
+    url: https://app.agentmesh.link/mcp
+    gated: false
+    note: 'initialize + tools/list + read-only tools/call anonymous; session header required; write tools unexercised.'
+  a2a:
+    url: https://app.agentmesh.link/a2a
+    gated: true
+    note: 'SendMessage 401 without X-Agent-Key; other 1.0 methods not implemented.'
+  graphql:
+    endpoint: null
+    note: 'No GraphQL surface.'
+cross_links:
+  mcp: mcp/agentmesh-link-mcp.yml
+  a2a: a2a/agentmesh-link-a2a.yml
+  conventions: conventions/agentmesh-link-conventions.yml
+  agentic_access: agentic-access/agentmesh-link-agentic-access.yml

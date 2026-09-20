@@ -1,0 +1,64 @@
+generated: '2026-09-19'
+method: searched
+source: https://app.agentmesh.link/
+corroboration: live unauthenticated responses from https://app.agentmesh.link (see probes)
+checked: '2026-09-19'
+summary: >-
+  AgentMesh publishes exactly one limit and it is a plan quota, not a rate: the Pro tier includes
+  "up to 100,000 API requests per month". No per-second or per-minute rate limit is documented
+  anywhere, the OpenAPI declares no 429 response on any of its 48 operations, and no rate-limit
+  header of any family was observed on live 200 or 401 responses. An agent therefore has no
+  runtime pacing signal; the only way to know where it stands against the monthly cap is to call
+  the usage/entitlement operations (see plans/).
+limit_count: 1
+scopes:
+  - scope: per-account
+    tier: Pro (CHF 19/month)
+    surface: all API requests
+    window: 1 month
+    limit: 100000
+    unit: requests
+    burst: null
+    status_on_exhaustion: not-published
+    verbatim: "Jusqu'à 100'000 requêtes API par mois."
+    source: https://app.agentmesh.link/
+    note: >-
+      A monthly quota attached to a paid tier. The Free and Business tiers publish no number at
+      all, so a Free-plan agent — the tier machine self-registration lands on — cannot know its cap.
+headers:
+  documented: false
+  observed: false
+  response_headers: []
+  absent:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    - RateLimit
+    - RateLimit-Policy
+    - RateLimit-Limit
+    - Retry-After
+  observation_note: >-
+    Observed live on 2026-09-19 without credentials: GET /health (200), GET
+    /v1/agents/discover?capability=search&limit=3 (200), GET /v1/stats (401), GET /v1/agents/me
+    (401), POST /a2a SendMessage (401). None carried any rate-limit or Retry-After header. The
+    response header set is Cloudflare's (server, cf-ray, cf-cache-status, nel, report-to,
+    alt-svc) plus the provider's own agentmesh-bootstrap and Link: rel="service-desc" headers.
+statuses:
+  rate_limited: not-published
+  rate_limited_note: >-
+    No 429 appears in the served OpenAPI (responses are 200/201/202 and 422 only) and no throttling
+    behaviour is described in the docs, README, QUICKSTART, SKILL.md or llms.txt. Whether the
+    monthly cap answers 429, 402 or 403 when exhausted is unobserved.
+runtime_signal_alternative:
+  operations:
+    - {operationId: account_usage_v1_account_usage_get, path: 'GET /v1/account/usage'}
+    - {operationId: m2m_entitlements_v1_m2m_entitlements_get, path: 'GET /v1/m2m/entitlements'}
+    - {operationId: m2m_commercial_usage_v1_m2m_usage_get, path: 'GET /v1/m2m/usage'}
+  note: >-
+    These are the closest thing to a quota signal — pull, not push. Their response schemas are
+    undeclared in the spec, and they answered 401 without a credential, so field names are unknown.
+probes:
+  - {url: 'https://app.agentmesh.link/health', status: 200, rate_limit_headers: none}
+  - {url: 'https://app.agentmesh.link/v1/agents/discover?capability=search&limit=3', status: 200, rate_limit_headers: none}
+  - {url: 'https://app.agentmesh.link/v1/stats', status: 401, rate_limit_headers: none}
+  - {url: 'https://app.agentmesh.link/pricing', status: 404}

@@ -1,0 +1,122 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  openapi/agentmesh-link-openapi.yml (the 422 HTTPValidationError / ValidationError schemas — the
+  only error the spec declares) plus live unauthenticated responses from app.agentmesh.link on
+  2026-09-19 for 401, 404, 422 and the JSON-RPC error codes of /a2a and /mcp.
+checked: '2026-09-19'
+format: fastapi-detail
+rfc9457: false
+rfc9457_note: >-
+  Not RFC 9457. Responses are application/json with a top-level `detail`, never
+  application/problem+json; no type URI, title or instance. Router-level 404s are not even JSON.
+  An agent must switch on HTTP status (and, on the two JSON-RPC surfaces, on the numeric
+  error.code) — the message strings vary for the same condition.
+media_type: application/json
+envelope:
+  auth_failure:
+    shape: '{"detail": "<string>"}'
+    strings_observed: ['Invalid X-Agent-Key', 'Missing X-Agent-Key', 'Missing X-User-Session']
+    note: >-
+      Same 401 status, three strings. "Invalid" is returned both when the header is absent and
+      when it is wrong on most routes; "Missing" appears on /v1/account/usage and the user routes.
+      Do not branch on text.
+  validation:
+    schema: HTTPValidationError
+    shape: '{"detail": [ValidationError, ...]}'
+    entry_fields:
+      loc: 'array of string|integer — path to the field, e.g. ["body","name"] or ["query","q"]'
+      msg: 'string — e.g. "Field required"'
+      type: 'string — machine class, e.g. "missing"'
+      input: 'any — the offending input (the whole body {} on an empty POST, null on a missing query param)'
+      ctx: 'object (optional) — constraint context'
+    observed: '{"detail":[{"type":"missing","loc":["body","name"],"msg":"Field required","input":{}}]}'
+    source: openapi/agentmesh-link-openapi.yml
+  not_found:
+    shape: 'text/plain "Not Found" (9 bytes) for unknown routes; application/json {"detail": ...} is expected for a known route with an unknown id but was not observed (those routes 401 before 404 without a key)'
+  jsonrpc:
+    shape: '{"jsonrpc":"2.0","id":<echoed or null>,"error":{"code":<int>,"message":"<string>"}}'
+    transports: [/a2a (application/json), /mcp (text/event-stream)]
+problem_types:
+- status: 401
+  name: Unauthorized
+  meaning: The X-Agent-Key header is absent or not a valid agent key (or, on user routes, X-User-Session is absent).
+  retryable: false
+  remediation: >-
+    Mint a key with POST /v1/agents/register (one-time delivery) and send it as X-Agent-Key; for
+    user routes, POST /v1/users/login and send the returned session as X-User-Session. No
+    WWW-Authenticate header is returned, so the required scheme must be known in advance.
+  declared_in_spec: false
+  observed_on: ['GET /v1/agents', 'GET /v1/agents/me', 'GET /v1/stats', 'GET /v1/search', 'GET /v1/network/graph', 'GET /v1/knowledge/{id}', 'GET /v1/tasks/performance/{agent_name}', 'GET /v1/m2m/entitlements', 'GET /v1/account/usage', 'POST /v1/knowledge', 'POST /a2a SendMessage', 'GET /v1/users/me']
+  method: probed
+- status: 404
+  name: Not Found
+  meaning: Unknown route (edge/router level) — returned as text/plain, not JSON.
+  retryable: false
+  remediation: 'Check the path against openapi/agentmesh-link-openapi.yml; every /.well-known/*, /apis.json and /pricing miss answers this way.'
+  declared_in_spec: false
+  media_type: text/plain; charset=utf-8
+  body: Not Found
+  method: probed
+- status: 422
+  name: Unprocessable Entity
+  meaning: Request body or query parameters failed validation. The body lists each failing field.
+  retryable: false
+  retryable_note: 'Not retryable as sent; a replay of the same payload fails identically.'
+  remediation: >-
+    Walk detail[].loc to the field and detail[].type for the class. Common causes here: missing
+    `name` on register (minLength 2), missing `capability` on /v1/agents/discover, missing `q` on
+    /discover and /v1/search (minLength 2), `confidence` outside 0..1 on publish, `password`
+    shorter than 10 on user registration, `limit` above the per-route maximum.
+  schema: HTTPValidationError
+  declared_in_spec: true
+  declared_on: 42 operations (every operation with parameters or a body)
+  observed_on: ['POST /v1/agents/register {}', 'GET /discover (no q)']
+  validation_before_auth: >-
+    Observed: an empty POST /v1/agents/register returns 422, and GET /discover without q returns
+    422, with no credential. On routes that are gated, validation order relative to auth was not
+    tested.
+  method: searched
+- status: 429
+  name: Too Many Requests
+  meaning: NOT DECLARED and NOT OBSERVED. Recorded so the absence is visible.
+  retryable: unknown
+  declared_in_spec: false
+  note: 'The only published limit is a monthly plan quota; what status it answers when exhausted is unpublished. See rate-limits/.'
+  method: searched
+- status: 5xx
+  name: Server errors
+  declared_in_spec: false
+  note: 'Not declared, not observed. Terms of Service warn the service "may be updated, interrupted or temporarily unavailable".'
+  method: searched
+jsonrpc_errors:
+- code: -32600
+  surface: /mcp
+  message: 'Bad Request: Missing session ID'
+  http_status: 400
+  meaning: A POST reached the MCP endpoint without an Mcp-Session-Id from a prior initialize.
+  remediation: 'Run initialize first, keep the mcp-session-id response header, send notifications/initialized, then call. A cold tools/list fails this way.'
+  method: probed
+- code: -32601
+  surface: /a2a
+  message: 'Method not implemented: <method>'
+  http_status: 200
+  meaning: The JSON-RPC method is not part of the gateway's implemented subset.
+  observed_for: [message/send, message/stream, SendStreamingMessage, CancelTask, GetAgentCard, agent/getAuthenticatedExtendedCard]
+  remediation: 'Use SendMessage (authenticated) or GetTask. The provider documents that full A2A conformance is not claimed.'
+  method: probed
+- code: -32001
+  surface: /a2a
+  message: 'Task not found'
+  http_status: 200
+  meaning: GetTask / tasks/get for an unknown or absent task id.
+  method: probed
+agent_guidance:
+  - 'Branch on HTTP status for REST and on error.code for JSON-RPC; never on the message string.'
+  - 'A 401 on a route the spec shows as credential-free (most of /v1/*) is expected — the spec under-declares security.'
+  - 'A 422 with input: {} means the body was empty or not JSON; check Content-Type: application/json.'
+  - 'There is no error you can retry into success without changing the request, and no idempotency key to make a retry safe. See conventions/.'
+cross_links:
+  conventions: conventions/agentmesh-link-conventions.yml
+  authentication: authentication/agentmesh-link-authentication.yml
+  rate_limits: rate-limits/agentmesh-link-rate-limits.yml
