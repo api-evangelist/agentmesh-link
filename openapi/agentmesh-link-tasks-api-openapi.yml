@@ -1,0 +1,282 @@
+openapi: 3.2.0
+info:
+  title: Agentmesh Link Tasks API
+  version: 0.2.0
+  description: 'Operations tagged Tasks across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.agentmesh.link
+  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
+tags:
+- name: Tasks
+paths:
+  /v1/tasks/route:
+    post:
+      summary: Route V10 Task
+      operationId: route_v10_task_v1_tasks_route_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - AgentKeyAuth: []
+      tags:
+      - Tasks
+  /v1/tasks/feedback:
+    post:
+      summary: Routing Feedback
+      operationId: routing_feedback_v1_tasks_feedback_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Tasks
+  /v1/tasks/performance/{agent_name}:
+    get:
+      summary: Routing Performance
+      operationId: routing_performance_v1_tasks_performance__agent_name__get
+      parameters:
+      - name: agent_name
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Agent Name
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Tasks
+  /v1/tasks/result:
+    post:
+      summary: Task Result Feedback
+      operationId: task_result_feedback_v1_tasks_result_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Tasks
+  /v1/tasks/orchestrate:
+    post:
+      summary: Orchestrate Multi Agent
+      operationId: orchestrate_multi_agent_v1_tasks_orchestrate_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - AgentKeyAuth: []
+      tags:
+      - Tasks
+  /v1/tasks/route-v7:
+    post:
+      summary: Route V7
+      operationId: route_v7_v1_tasks_route_v7_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Tasks
+  /v1/tasks/route-v90-memory:
+    post:
+      summary: Route V90 Memory
+      description: 'V9 experimental routing path.
+
+
+        Reuses persisted Knowledge as explicit memory consumed by the
+
+        already validated V8.8 adaptive router.
+
+
+        Existing routing endpoints remain untouched.'
+      operationId: route_v90_memory_v1_tasks_route_v90_memory_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+              title: Payload
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Tasks
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    AgentKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+      description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+x-refined-from:
+- agentmesh-link-openapi.json
+- agentmesh-link-openapi.yml

@@ -1,0 +1,128 @@
+openapi: 3.2.0
+info:
+  title: Agentmesh Link Billing API
+  version: 0.2.0
+  description: 'Operations tagged billing across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.agentmesh.link
+  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
+tags:
+- name: Billing
+paths:
+  /v1/billing/stripe/checkout:
+    post:
+      tags:
+      - Billing
+      summary: Create Checkout
+      operationId: create_checkout_v1_billing_stripe_checkout_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/billing/stripe/webhook:
+    post:
+      tags:
+      - Billing
+      summary: Stripe Webhook
+      operationId: stripe_webhook_v1_billing_stripe_webhook_post
+      parameters:
+      - name: Stripe-Signature
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Stripe-Signature
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CheckoutRequest:
+      properties:
+        plan:
+          type: string
+          title: Plan
+        client_name:
+          type: string
+          title: Client Name
+        success_url:
+          type: string
+          title: Success Url
+        cancel_url:
+          type: string
+          title: Cancel Url
+      type: object
+      required:
+      - plan
+      - client_name
+      - success_url
+      - cancel_url
+      title: CheckoutRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    AgentKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+      description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+x-refined-from:
+- agentmesh-link-openapi.json
+- agentmesh-link-openapi.yml

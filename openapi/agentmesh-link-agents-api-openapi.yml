@@ -1,0 +1,355 @@
+openapi: 3.2.0
+info:
+  title: Agentmesh Link Agents API
+  version: 0.2.0
+  description: 'Operations tagged Agents across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.agentmesh.link
+  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
+tags:
+- name: Agents
+paths:
+  /v1/agents/access-request:
+    post:
+      summary: Request Agentmesh Access
+      operationId: request_agentmesh_access_v1_agents_access_request_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentAccessRequestCreate'
+        required: true
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents/access-approve:
+    post:
+      summary: Approve Agentmesh Access
+      operationId: approve_agentmesh_access_v1_agents_access_approve_post
+      parameters:
+      - name: x-user-session
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-User-Session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentAccessApproval'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents/access-exchange:
+    post:
+      summary: Exchange Agentmesh Access
+      operationId: exchange_agentmesh_access_v1_agents_access_exchange_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentAccessExchange'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents/register:
+    post:
+      summary: Register Agent
+      operationId: register_agent_v1_agents_register_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentRegister'
+      responses:
+        '201':
+          description: Agent registered successfully. The api_key is returned only once.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentRegisterResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents:
+    get:
+      summary: List Agents
+      operationId: list_agents_v1_agents_get
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents/discover:
+    get:
+      summary: Discover Agents
+      operationId: discover_agents_v1_agents_discover_get
+      parameters:
+      - name: capability
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          title: Capability
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+  /v1/agents/me:
+    get:
+      summary: Whoami
+      operationId: whoami_v1_agents_me_get
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Agents
+components:
+  schemas:
+    AgentAccessApproval:
+      properties:
+        request_id:
+          type: string
+          title: Request Id
+      type: object
+      required:
+      - request_id
+      title: AgentAccessApproval
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AgentRegisterResponse:
+      type: object
+      required:
+      - agent
+      - api_key
+      - warning
+      properties:
+        agent:
+          type: object
+          description: The newly registered AgentMesh agent.
+        api_key:
+          type: string
+          description: 'Agent API key. Save it immediately: it is returned only once at registration time.'
+        warning:
+          type: string
+          description: Important information about one-time API key delivery.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AgentRegister:
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+      type: object
+      required:
+      - name
+      title: AgentRegister
+    AgentAccessExchange:
+      properties:
+        approval_token:
+          type: string
+          title: Approval Token
+      type: object
+      required:
+      - approval_token
+      title: AgentAccessExchange
+    AgentAccessRequestCreate:
+      properties:
+        agent_name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Agent Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+        owner_email:
+          type: string
+          maxLength: 255
+          minLength: 3
+          title: Owner Email
+        reason:
+          type: string
+          maxLength: 2000
+          title: Reason
+          default: ''
+      type: object
+      required:
+      - agent_name
+      - owner_email
+      title: AgentAccessRequestCreate
+  securitySchemes:
+    AgentKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+      description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+x-refined-from:
+- agentmesh-link-openapi.json
+- agentmesh-link-openapi.yml

@@ -1,0 +1,177 @@
+openapi: 3.2.0
+info:
+  title: Agentmesh Link M2m API
+  version: 0.2.0
+  description: 'Operations tagged M2m across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.agentmesh.link
+  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
+tags:
+- name: M2m
+paths:
+  /v1/m2m/usage:
+    get:
+      summary: M2M Commercial Usage
+      operationId: m2m_commercial_usage_v1_m2m_usage_get
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - M2m
+  /v1/m2m/entitlements:
+    get:
+      summary: M2M Entitlements
+      operationId: m2m_entitlements_v1_m2m_entitlements_get
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - M2m
+  /v1/m2m/sequence:
+    post:
+      summary: M2M Sequence
+      operationId: m2m_sequence_v1_m2m_sequence_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - M2m
+  /v1/m2m/dispatch:
+    post:
+      summary: M2M Dispatch
+      operationId: m2m_dispatch_v1_m2m_dispatch_post
+      parameters:
+      - name: x-agent-key
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-Agent-Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Payload
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - M2m
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    AgentKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+      description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+x-refined-from:
+- agentmesh-link-openapi.json
+- agentmesh-link-openapi.yml

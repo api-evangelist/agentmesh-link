@@ -1,0 +1,283 @@
+openapi: 3.2.0
+info:
+  title: Agentmesh Link Users API
+  version: 0.2.0
+  description: 'Operations tagged users across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://app.agentmesh.link
+  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
+tags:
+- name: Users
+paths:
+  /v1/users/register:
+    post:
+      tags:
+      - Users
+      summary: Register User
+      operationId: register_user_v1_users_register_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/users/login:
+    post:
+      tags:
+      - Users
+      summary: Login User
+      operationId: login_user_v1_users_login_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUser'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/users/me:
+    get:
+      tags:
+      - Users
+      summary: User Me
+      operationId: user_me_v1_users_me_get
+      parameters:
+      - name: x-user-session
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-User-Session
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/users/logout:
+    post:
+      tags:
+      - Users
+      summary: Logout
+      operationId: logout_v1_users_logout_post
+      parameters:
+      - name: x-user-session
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-User-Session
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/users/agents:
+    post:
+      tags:
+      - Users
+      summary: Create Owned Agent
+      operationId: create_owned_agent_v1_users_agents_post
+      parameters:
+      - name: x-user-session
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-User-Session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOwnedAgent'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/users/dashboard:
+    get:
+      tags:
+      - Users
+      summary: Dashboard
+      operationId: dashboard_v1_users_dashboard_get
+      parameters:
+      - name: x-user-session
+        in: header
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: X-User-Session
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RegisterUser:
+      properties:
+        email:
+          type: string
+          maxLength: 254
+          minLength: 5
+          title: Email
+        display_name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Display Name
+        password:
+          type: string
+          maxLength: 200
+          minLength: 10
+          title: Password
+        invite_code:
+          anyOf:
+          - type: string
+            maxLength: 200
+          - type: 'null'
+          title: Invite Code
+      type: object
+      required:
+      - email
+      - display_name
+      - password
+      title: RegisterUser
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateOwnedAgent:
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+      type: object
+      required:
+      - name
+      title: CreateOwnedAgent
+    LoginUser:
+      properties:
+        email:
+          type: string
+          maxLength: 254
+          minLength: 5
+          title: Email
+        password:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginUser
+  securitySchemes:
+    AgentKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-Key
+      description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
+x-refined-from:
+- agentmesh-link-openapi.json
+- agentmesh-link-openapi.yml
