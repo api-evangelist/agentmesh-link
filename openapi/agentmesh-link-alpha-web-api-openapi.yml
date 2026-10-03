@@ -1,11 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Agentmesh Link Alpha Web API
+  title: AgentMesh Alpha Web API
+  description: Shared validated experience layer for AI agents
   version: 0.2.0
-  description: 'Operations tagged alpha-web across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
-servers:
-- url: https://app.agentmesh.link
-  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
 tags:
 - name: alpha-web
 paths:
@@ -68,6 +65,3 @@ components:
       in: header
       name: X-Agent-Key
       description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
-x-refined-from:
-- agentmesh-link-openapi.json
-- agentmesh-link-openapi.yml

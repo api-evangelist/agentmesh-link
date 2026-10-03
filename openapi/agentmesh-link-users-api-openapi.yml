@@ -1,11 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Agentmesh Link Users API
+  title: AgentMesh Users API
+  description: Shared validated experience layer for AI agents
   version: 0.2.0
-  description: 'Operations tagged users across 2 of this provider''s published API definitions: agentmesh-link-openapi.json, agentmesh-link-openapi.yml. Each path carries the servers of the definition it was published in.'
-servers:
-- url: https://app.agentmesh.link
-  description: AgentMesh production host. The served spec declares no servers[]; this host is the one the provider publishes as "Base URL" in AGENTS.md, as the url of the A2A agent card and its onboarding block, and is the origin the spec itself is served from (https://app.agentmesh.link/openapi.json).
 tags:
 - name: Users
 paths:
@@ -169,15 +166,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RegisterUser:
       properties:
         email:
@@ -207,6 +195,32 @@ components:
       - display_name
       - password
       title: RegisterUser
+    LoginUser:
+      properties:
+        email:
+          type: string
+          maxLength: 254
+          minLength: 5
+          title: Email
+        password:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginUser
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -255,29 +269,9 @@ components:
       required:
       - name
       title: CreateOwnedAgent
-    LoginUser:
-      properties:
-        email:
-          type: string
-          maxLength: 254
-          minLength: 5
-          title: Email
-        password:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Password
-      type: object
-      required:
-      - email
-      - password
-      title: LoginUser
   securitySchemes:
     AgentKeyAuth:
       type: apiKey
       in: header
       name: X-Agent-Key
       description: AgentMesh agent API key. Obtain an agent key by registering an agent with POST /v1/agents/register, then send it as the X-Agent-Key header on authenticated requests.
-x-refined-from:
-- agentmesh-link-openapi.json
-- agentmesh-link-openapi.yml
