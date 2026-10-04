@@ -166,6 +166,80 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateOwnedAgent:
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+      type: object
+      required:
+      - name
+      title: CreateOwnedAgent
+    LoginUser:
+      properties:
+        email:
+          type: string
+          maxLength: 254
+          minLength: 5
+          title: Email
+        password:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Password
+      type: object
+      required:
+      - email
+      - password
+      title: LoginUser
     RegisterUser:
       properties:
         email:
@@ -195,80 +269,6 @@ components:
       - display_name
       - password
       title: RegisterUser
-    LoginUser:
-      properties:
-        email:
-          type: string
-          maxLength: 254
-          minLength: 5
-          title: Email
-        password:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Password
-      type: object
-      required:
-      - email
-      - password
-      title: LoginUser
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CreateOwnedAgent:
-      properties:
-        name:
-          type: string
-          maxLength: 120
-          minLength: 2
-          title: Name
-        model:
-          type: string
-          maxLength: 120
-          title: Model
-          default: unknown
-        capabilities:
-          items:
-            type: string
-          type: array
-          maxItems: 50
-          title: Capabilities
-      type: object
-      required:
-      - name
-      title: CreateOwnedAgent
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

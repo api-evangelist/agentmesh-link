@@ -41,15 +41,32 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
-      title: HTTPValidationError
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     KnowledgeTransferRequest:
       properties:
         sender_uid:
@@ -66,28 +83,15 @@ components:
       - receiver_uid
       - package
       title: KnowledgeTransferRequest
-    KnowledgeTransferResult:
+    HTTPValidationError:
       properties:
-        sender_uid:
-          type: string
-          title: Sender Uid
-        receiver_uid:
-          type: string
-          title: Receiver Uid
-        package:
-          additionalProperties: true
-          type: object
-          title: Package
-        status:
-          type: string
-          title: Status
-          default: queued
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - sender_uid
-      - receiver_uid
-      - package
-      title: KnowledgeTransferResult
+      title: HTTPValidationError
     KnowledgePackage:
       properties:
         problem:
@@ -139,32 +143,28 @@ components:
         It can therefore be exchanged between agents independently of the
 
         AgentMesh instance that created it.'
-    ValidationError:
+    KnowledgeTransferResult:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        sender_uid:
           type: string
-          title: Message
-        type:
+          title: Sender Uid
+        receiver_uid:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
+          title: Receiver Uid
+        package:
+          additionalProperties: true
           type: object
-          title: Context
+          title: Package
+        status:
+          type: string
+          title: Status
+          default: queued
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - sender_uid
+      - receiver_uid
+      - package
+      title: KnowledgeTransferResult
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

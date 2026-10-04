@@ -79,15 +79,28 @@ paths:
       - Messages
 components:
   schemas:
-    HTTPValidationError:
+    AgentMessageCreate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        receiver_uid:
+          type: string
+          title: Receiver Uid
+        subject:
+          type: string
+          title: Subject
+          default: ''
+        body:
+          type: string
+          title: Body
+        knowledge_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Knowledge Id
       type: object
-      title: HTTPValidationError
+      required:
+      - receiver_uid
+      - body
+      title: AgentMessageCreate
     ValidationError:
       properties:
         loc:
@@ -114,28 +127,15 @@ components:
       - msg
       - type
       title: ValidationError
-    AgentMessageCreate:
+    HTTPValidationError:
       properties:
-        receiver_uid:
-          type: string
-          title: Receiver Uid
-        subject:
-          type: string
-          title: Subject
-          default: ''
-        body:
-          type: string
-          title: Body
-        knowledge_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Knowledge Id
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - receiver_uid
-      - body
-      title: AgentMessageCreate
+      title: HTTPValidationError
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

@@ -40,30 +40,6 @@ paths:
       - Admin
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ApiClientCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 120
-          minLength: 1
-          title: Name
-        plan:
-          type: string
-          title: Plan
-          default: free
-      type: object
-      required:
-      - name
-      title: ApiClientCreate
     ValidationError:
       properties:
         loc:
@@ -90,6 +66,30 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ApiClientCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 1
+          title: Name
+        plan:
+          type: string
+          title: Plan
+          default: free
+      type: object
+      required:
+      - name
+      title: ApiClientCreate
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

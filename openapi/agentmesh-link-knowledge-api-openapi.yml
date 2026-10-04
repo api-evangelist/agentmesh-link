@@ -144,15 +144,25 @@ paths:
       - Knowledge
 components:
   schemas:
-    HTTPValidationError:
+    Validation:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        success:
+          type: boolean
+          title: Success
+        validator_agent:
+          type: string
+          maxLength: 120
+          title: Validator Agent
+          default: unknown
+        note:
+          type: string
+          maxLength: 2000
+          title: Note
+          default: ''
       type: object
-      title: HTTPValidationError
+      required:
+      - success
+      title: Validation
     ValidationError:
       properties:
         loc:
@@ -179,25 +189,15 @@ components:
       - msg
       - type
       title: ValidationError
-    Validation:
+    HTTPValidationError:
       properties:
-        success:
-          type: boolean
-          title: Success
-        validator_agent:
-          type: string
-          maxLength: 120
-          title: Validator Agent
-          default: unknown
-        note:
-          type: string
-          maxLength: 2000
-          title: Note
-          default: ''
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - success
-      title: Validation
+      title: HTTPValidationError
     KnowledgeCreate:
       properties:
         problem:

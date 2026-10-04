@@ -217,15 +217,6 @@ paths:
       - Agents
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AgentAccessRequestCreate:
       properties:
         agent_name:
@@ -259,53 +250,6 @@ components:
       - agent_name
       - owner_email
       title: AgentAccessRequestCreate
-    AgentAccessApproval:
-      properties:
-        request_id:
-          type: string
-          title: Request Id
-      type: object
-      required:
-      - request_id
-      title: AgentAccessApproval
-    AgentRegisterResponse:
-      type: object
-      required:
-      - agent
-      - api_key
-      - warning
-      properties:
-        agent:
-          type: object
-          description: The newly registered AgentMesh agent.
-        api_key:
-          type: string
-          description: 'Agent API key. Save it immediately: it is returned only once at registration time.'
-        warning:
-          type: string
-          description: Important information about one-time API key delivery.
-    AgentRegister:
-      properties:
-        name:
-          type: string
-          maxLength: 120
-          minLength: 2
-          title: Name
-        model:
-          type: string
-          maxLength: 120
-          title: Model
-          default: unknown
-        capabilities:
-          items:
-            type: string
-          type: array
-          maxItems: 50
-          title: Capabilities
-      type: object
-      required:
-      - name
-      title: AgentRegister
     ValidationError:
       properties:
         loc:
@@ -332,6 +276,40 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AgentAccessApproval:
+      properties:
+        request_id:
+          type: string
+          title: Request Id
+      type: object
+      required:
+      - request_id
+      title: AgentAccessApproval
+    AgentRegisterResponse:
+      type: object
+      required:
+      - agent
+      - api_key
+      - warning
+      properties:
+        agent:
+          type: object
+          description: The newly registered AgentMesh agent.
+        api_key:
+          type: string
+          description: 'Agent API key. Save it immediately: it is returned only once at registration time.'
+        warning:
+          type: string
+          description: Important information about one-time API key delivery.
     AgentAccessExchange:
       properties:
         approval_token:
@@ -341,6 +319,28 @@ components:
       required:
       - approval_token
       title: AgentAccessExchange
+    AgentRegister:
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          minLength: 2
+          title: Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+      type: object
+      required:
+      - name
+      title: AgentRegister
   securitySchemes:
     AgentKeyAuth:
       type: apiKey
