@@ -108,6 +108,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - A2A
+  tags_raw:
   - A2a
   properties:
   - type: OpenAPI
@@ -248,6 +250,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - Billing
+  tags_raw:
   - billing
   properties:
   - type: OpenAPI
@@ -388,6 +392,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - M2M
+  tags_raw:
   - M2m
   properties:
   - type: OpenAPI
@@ -416,6 +422,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -444,6 +452,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - Networks
+  tags_raw:
   - Network
   properties:
   - type: OpenAPI
@@ -528,6 +538,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
@@ -584,6 +596,8 @@ apis:
   humanURL: https://app.agentmesh.link/docs
   baseURL: https://app.agentmesh.link/mcp
   tags:
+  - User
+  tags_raw:
   - users
   properties:
   - type: OpenAPI
@@ -635,6 +649,9 @@ apis:
   - type: RateLimits
     url: rate-limits/agentmesh-link-rate-limits.yml
 common:
+- type: CapabilityMap
+  url: capabilities/agentmesh-link-capability-edges.yml
+  name: AgentMesh Business Capability Map
 - type: AgenticAccess
   url: agentic-access/agentmesh-link-agentic-access.yml
 - type: Website
