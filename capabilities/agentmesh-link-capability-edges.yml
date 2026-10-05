@@ -1,0 +1,25 @@
+slug: agentmesh-link
+provider: AgentMesh
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Admin
+  spec_file: agentmesh-link-admin-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.72
+  evidence: POST /v1/admin/keys  create_api_client_v1_admin_keys_post  Create Api Client (ApiClientCreate)
+  reason: Creates API client credentials for consumers of the platform, matching developer credential
+    issuance. Could alternatively be read as general identity & access management, hence moderate confidence;
+    the vendor's X-Agent-Key developer credential context favours the developer-platform reading.
