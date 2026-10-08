@@ -94,3 +94,29 @@ access_gate:
 probes:
   - {url: 'https://app.agentmesh.link/pricing', status: 404}
   - {url: 'https://app.agentmesh.link/', status: 200}
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
+  - name: Pro
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: Business
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
