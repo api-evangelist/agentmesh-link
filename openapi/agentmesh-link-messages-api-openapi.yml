@@ -79,28 +79,6 @@ paths:
       - Messages
 components:
   schemas:
-    AgentMessageCreate:
-      properties:
-        receiver_uid:
-          type: string
-          title: Receiver Uid
-        subject:
-          type: string
-          title: Subject
-          default: ''
-        body:
-          type: string
-          title: Body
-        knowledge_id:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Knowledge Id
-      type: object
-      required:
-      - receiver_uid
-      - body
-      title: AgentMessageCreate
     ValidationError:
       properties:
         loc:
@@ -127,6 +105,28 @@ components:
       - msg
       - type
       title: ValidationError
+    AgentMessageCreate:
+      properties:
+        receiver_uid:
+          type: string
+          title: Receiver Uid
+        subject:
+          type: string
+          title: Subject
+          default: ''
+        body:
+          type: string
+          title: Body
+        knowledge_id:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Knowledge Id
+      type: object
+      required:
+      - receiver_uid
+      - body
+      title: AgentMessageCreate
     HTTPValidationError:
       properties:
         detail:
