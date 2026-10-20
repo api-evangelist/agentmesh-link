@@ -14,7 +14,7 @@ edges:
     registered_name: io.github.lugdwei/AgentMesh
     register_id: io.github.lugdwei/AgentMesh
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   mcp_registry:
     servers:
     - io.github.lugdwei/AgentMesh
@@ -47,7 +47,8 @@ edges:
     grade: conformant
     verdict: live
     protocol_version: '1.0'
-    deviations: []
+    deviations:
+    - supportedInterfaces-instead-of-additionalInterfaces
     card_subject: api
   contract_reference:
     register: provider's own /.well-known/agent-card.json
@@ -59,7 +60,7 @@ edges:
     matched_domain: agentmesh.link
     matched_by: own-domain
     detected_by: sweep-ai-agents.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   detected_by: sweep-ai-agents.py
   first_seen: '2026-10-15'
 - partner_name: a2aregistry.org
@@ -95,7 +96,7 @@ edges:
     sample_agents:
     - AgentMesh
     detected_by: sweep-ai-agents.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   detected_by: sweep-ai-agents.py
   first_seen: '2026-10-15'
 generated: '2026-10-14'
