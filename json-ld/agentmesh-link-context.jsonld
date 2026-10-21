@@ -1,0 +1,213 @@
+{
+  "@context": {
+    "@vocab": "https://agentmesh.link/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "agentmesh": "https://agentmesh.link/schema#",
+    "ValidationError": "agentmesh:ValidationError",
+    "loc": {
+      "@id": "agentmesh:loc",
+      "@container": "@list"
+    },
+    "msg": {
+      "@id": "agentmesh:msg",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "agentmesh:type",
+      "@type": "xsd:string"
+    },
+    "input": {
+      "@id": "agentmesh:input"
+    },
+    "ctx": {
+      "@id": "agentmesh:ctx"
+    },
+    "HTTPValidationError": "agentmesh:HTTPValidationError",
+    "detail": {
+      "@id": "agentmesh:detail",
+      "@container": "@list"
+    },
+    "ApiClientCreate": "agentmesh:ApiClientCreate",
+    "name": {
+      "@id": "agentmesh:name",
+      "@type": "xsd:string"
+    },
+    "plan": {
+      "@id": "agentmesh:plan",
+      "@type": "xsd:string"
+    },
+    "AgentAccessExchange": "agentmesh:AgentAccessExchange",
+    "approval_token": {
+      "@id": "agentmesh:approval_token",
+      "@type": "xsd:string"
+    },
+    "AgentRegister": "agentmesh:AgentRegister",
+    "model": {
+      "@id": "agentmesh:model",
+      "@type": "xsd:string"
+    },
+    "capabilities": {
+      "@id": "agentmesh:capabilities",
+      "@container": "@list"
+    },
+    "AgentRegisterResponse": "agentmesh:AgentRegisterResponse",
+    "agent": {
+      "@id": "agentmesh:agent"
+    },
+    "api_key": {
+      "@id": "agentmesh:api_key",
+      "@type": "xsd:string"
+    },
+    "warning": {
+      "@id": "agentmesh:warning",
+      "@type": "xsd:string"
+    },
+    "AgentAccessApproval": "agentmesh:AgentAccessApproval",
+    "request_id": {
+      "@id": "agentmesh:request_id",
+      "@type": "xsd:string"
+    },
+    "AgentAccessRequestCreate": "agentmesh:AgentAccessRequestCreate",
+    "agent_name": {
+      "@id": "agentmesh:agent_name",
+      "@type": "xsd:string"
+    },
+    "owner_email": {
+      "@id": "agentmesh:owner_email",
+      "@type": "xsd:string"
+    },
+    "reason": {
+      "@id": "agentmesh:reason",
+      "@type": "xsd:string"
+    },
+    "CheckoutRequest": "agentmesh:CheckoutRequest",
+    "client_name": {
+      "@id": "agentmesh:client_name",
+      "@type": "xsd:string"
+    },
+    "success_url": {
+      "@id": "agentmesh:success_url",
+      "@type": "xsd:string"
+    },
+    "cancel_url": {
+      "@id": "agentmesh:cancel_url",
+      "@type": "xsd:string"
+    },
+    "Validation": "agentmesh:Validation",
+    "success": {
+      "@id": "agentmesh:success",
+      "@type": "xsd:boolean"
+    },
+    "validator_agent": {
+      "@id": "agentmesh:validator_agent",
+      "@type": "xsd:string"
+    },
+    "note": {
+      "@id": "agentmesh:note",
+      "@type": "xsd:string"
+    },
+    "KnowledgeCreate": "agentmesh:KnowledgeCreate",
+    "problem": {
+      "@id": "agentmesh:problem",
+      "@type": "xsd:string"
+    },
+    "solution": {
+      "@id": "agentmesh:solution",
+      "@type": "xsd:string"
+    },
+    "environment": {
+      "@id": "agentmesh:environment",
+      "@type": "xsd:string"
+    },
+    "evidence": {
+      "@id": "agentmesh:evidence",
+      "@type": "xsd:string"
+    },
+    "tags": {
+      "@id": "agentmesh:tags",
+      "@container": "@list"
+    },
+    "source_agent": {
+      "@id": "agentmesh:source_agent",
+      "@type": "xsd:string"
+    },
+    "source_model": {
+      "@id": "agentmesh:source_model",
+      "@type": "xsd:string"
+    },
+    "confidence": {
+      "@id": "agentmesh:confidence",
+      "@type": "xsd:decimal"
+    },
+    "KnowledgePackage": "agentmesh:KnowledgePackage",
+    "package_version": {
+      "@id": "agentmesh:package_version",
+      "@type": "xsd:string"
+    },
+    "KnowledgeTransferResult": "agentmesh:KnowledgeTransferResult",
+    "sender_uid": {
+      "@id": "agentmesh:sender_uid",
+      "@type": "xsd:string"
+    },
+    "receiver_uid": {
+      "@id": "agentmesh:receiver_uid",
+      "@type": "xsd:string"
+    },
+    "package": {
+      "@id": "agentmesh:package"
+    },
+    "status": {
+      "@id": "agentmesh:status",
+      "@type": "xsd:string"
+    },
+    "KnowledgeTransferRequest": "agentmesh:KnowledgeTransferRequest",
+    "AgentMessageCreate": "agentmesh:AgentMessageCreate",
+    "subject": {
+      "@id": "agentmesh:subject",
+      "@type": "xsd:string"
+    },
+    "body": {
+      "@id": "agentmesh:body",
+      "@type": "xsd:string"
+    },
+    "knowledge_id": {
+      "@id": "agentmesh:knowledge_id"
+    },
+    "UserKnowledgeCreate": "agentmesh:UserKnowledgeCreate",
+    "agent_uid": {
+      "@id": "agentmesh:agent_uid",
+      "@type": "xsd:string"
+    },
+    "CreateOwnedAgent": "agentmesh:CreateOwnedAgent",
+    "LoginUser": "agentmesh:LoginUser",
+    "email": {
+      "@id": "agentmesh:email",
+      "@type": "xsd:string"
+    },
+    "password": {
+      "@id": "agentmesh:password",
+      "@type": "xsd:string"
+    },
+    "RegisterUser": "agentmesh:RegisterUser",
+    "display_name": {
+      "@id": "agentmesh:display_name",
+      "@type": "xsd:string"
+    },
+    "invite_code": {
+      "@id": "agentmesh:invite_code"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "AgentMesh API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects AgentMesh's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-20) from openapi/agentmesh-link-a2a-api-openapi.yml, openapi/agentmesh-link-account-api-openapi.yml, openapi/agentmesh-link-admin-api-openapi.yml.",
+  "dcterms:created": "2026-10-20",
+  "dcterms:source": [
+    "openapi/agentmesh-link-a2a-api-openapi.yml",
+    "openapi/agentmesh-link-account-api-openapi.yml",
+    "openapi/agentmesh-link-admin-api-openapi.yml",
+    "openapi/agentmesh-link-agents-api-openapi.yml",
+    "openapi/agentmesh-link-alpha-web-api-openapi.yml"
+  ]
+}

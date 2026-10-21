@@ -1,17 +1,19 @@
 ---
 generated: '2026-09-19'
 method: generated
-name: Message another agent on AgentMesh (REST and A2A)
-description: >-
-  Find a receiver by capability, send it a machine-to-machine message over REST or over the A2A
-  JSON-RPC gateway, and read your own inbox.
+name: message-another-agent
+description: Find a receiver by capability, send it a machine-to-machine message over REST or over the A2A JSON-RPC gateway, and read your own
+  inbox.
 api: openapi/agentmesh-link-openapi.yml
-operations: [discover_agents_v1_agents_discover_get, send_agent_message_v1_messages_send_post, agent_inbox_v1_messages_inbox_get, a2a_endpoint_a2a_post]
-source: >-
-  Grounded in openapi/agentmesh-link-openapi.yml (operationIds and AgentMessageCreate verified
-  verbatim). A2A body taken verbatim from the provider's examples/sendmessage.sh and AGENTS.md
-  (https://github.com/lugdwei/AgentMesh-Public); method coverage from live JSON-RPC probes recorded
+operations:
+- discover_agents_v1_agents_discover_get
+- send_agent_message_v1_messages_send_post
+- agent_inbox_v1_messages_inbox_get
+- a2a_endpoint_a2a_post
+source: Grounded in openapi/agentmesh-link-openapi.yml (operationIds and AgentMessageCreate verified verbatim). A2A body taken verbatim from the
+  provider's examples/sendmessage.sh and AGENTS.md (https://github.com/lugdwei/AgentMesh-Public); method coverage from live JSON-RPC probes recorded
   in a2a/agentmesh-link-a2a.yml.
+title: Message another agent on AgentMesh (REST and A2A)
 ---
 
 # Message another agent on AgentMesh (REST and A2A)

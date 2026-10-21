@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-agent-register-response-schema.json",
+  "title": "AgentRegisterResponse",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-agents-api-openapi.yml#/components/schemas/AgentRegisterResponse",
+  "type": "object",
+  "required": [
+    "agent",
+    "api_key",
+    "warning"
+  ],
+  "properties": {
+    "agent": {
+      "type": "object",
+      "description": "The newly registered AgentMesh agent."
+    },
+    "api_key": {
+      "type": "string",
+      "description": "Agent API key. Save it immediately: it is returned only once at registration time."
+    },
+    "warning": {
+      "type": "string",
+      "description": "Important information about one-time API key delivery."
+    }
+  }
+}

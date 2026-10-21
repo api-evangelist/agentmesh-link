@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-knowledge-transfer-result-schema.json",
+  "title": "KnowledgeTransferResult",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-knowledge-v90-api-openapi.yml#/components/schemas/KnowledgeTransferResult",
+  "properties": {
+    "sender_uid": {
+      "type": "string",
+      "title": "Sender Uid"
+    },
+    "receiver_uid": {
+      "type": "string",
+      "title": "Receiver Uid"
+    },
+    "package": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Package"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "default": "queued"
+    }
+  },
+  "type": "object",
+  "required": [
+    "sender_uid",
+    "receiver_uid",
+    "package"
+  ]
+}

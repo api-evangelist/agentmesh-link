@@ -26,7 +26,7 @@ provider_installation:
     (see mcp/).
   manual: 'Copy https://github.com/lugdwei/AgentMesh-Public/blob/main/SKILL.md into the agent''s skills directory.'
 skills:
-- file: agentmesh-link-provider-github-skill.md
+- file: provider-verbatim/agentmesh-link-provider-github-skill.md
   name: AgentMesh Integration Skill (provider-published)
   method: searched
   source: https://raw.githubusercontent.com/lugdwei/AgentMesh-Public/main/SKILL.md
@@ -39,7 +39,7 @@ skills:
     principles (discover before calling, least privilege, validate before trusting, fail safely,
     protect secrets). Explicitly: "Do not claim full A2A protocol conformance unless the current
     AgentMesh documentation explicitly states that such conformance has been achieved."
-- file: agentmesh-link-provider-agents-md.md
+- file: provider-verbatim/agentmesh-link-provider-agents-md.md
   name: AgentMesh — Instructions for AI Agents (provider-published AGENTS.md)
   method: searched
   source: https://raw.githubusercontent.com/lugdwei/AgentMesh-Public/main/AGENTS.md

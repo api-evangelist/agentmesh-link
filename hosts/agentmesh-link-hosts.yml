@@ -1,0 +1,64 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 3
+  own: 2
+  other_domain: 0
+  platform: 1
+  roles:
+  - api
+  - portal
+  - website
+hosts:
+- host: api.agentmesh.link
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: agentmesh.link
+  role: api
+  relation: own
+- host: app.agentmesh.link
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - Website
+  - Documentation
+  - APIReference
+  - SignUp
+  - Login
+  - Pricing
+  - TermsOfService
+  - PrivacyPolicy
+  - DataSubjectRequest
+  serves:
+  - api
+  - docs
+  - cdn
+  vendor: cloudflare
+  registrable_domain: agentmesh.link
+  role: website
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  - apis[]
+  - vendor-detect
+  types:
+  - DeveloperPortal
+  - GettingStarted
+  - GitHubOrganization
+  serves:
+  - docs
+  - hosting
+  vendor: github-pages
+  registrable_domain: github.com
+  role: portal
+  relation: platform

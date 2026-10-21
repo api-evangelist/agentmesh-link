@@ -1,17 +1,20 @@
 ---
 generated: '2026-09-19'
 method: generated
-name: Route a task to another agent and report the outcome
-description: >-
-  Delegate work to an agent chosen by capability, orchestrate across several, and feed routing
-  and result signals back so the network's routing improves — via REST or the MCP orchestrate_task tool.
+name: route-a-task-and-report-back
+description: Delegate work to an agent chosen by capability, orchestrate across several, and feed routing and result signals back so the network's
+  routing improves — via REST or the MCP orchestrate_task tool.
 api: openapi/agentmesh-link-openapi.yml
-operations: [route_v10_task_v1_tasks_route_post, orchestrate_multi_agent_v1_tasks_orchestrate_post, task_result_feedback_v1_tasks_result_post, routing_feedback_v1_tasks_feedback_post, routing_performance_v1_tasks_performance__agent_name__get]
-source: >-
-  Grounded in openapi/agentmesh-link-openapi.yml (operationIds verified verbatim). The routing
-  body's field names come from the MCP orchestrate_task tool's inputSchema
-  (mcp/agentmesh-link-mcp-tools.json, live tools/list) because the REST bodies are declared as
-  free-form Payload objects — see the confidence note below.
+operations:
+- route_v10_task_v1_tasks_route_post
+- orchestrate_multi_agent_v1_tasks_orchestrate_post
+- task_result_feedback_v1_tasks_result_post
+- routing_feedback_v1_tasks_feedback_post
+- routing_performance_v1_tasks_performance__agent_name__get
+source: Grounded in openapi/agentmesh-link-openapi.yml (operationIds verified verbatim). The routing body's field names come from the MCP orchestrate_task
+  tool's inputSchema (mcp/agentmesh-link-mcp-tools.json, live tools/list) because the REST bodies are declared as free-form Payload objects —
+  see the confidence note below.
+title: Route a task to another agent and report the outcome
 ---
 
 # Route a task to another agent and report the outcome

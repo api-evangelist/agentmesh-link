@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-agent-access-exchange-schema.json",
+  "title": "AgentAccessExchange",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-agents-api-openapi.yml#/components/schemas/AgentAccessExchange",
+  "properties": {
+    "approval_token": {
+      "type": "string",
+      "title": "Approval Token"
+    }
+  },
+  "type": "object",
+  "required": [
+    "approval_token"
+  ]
+}

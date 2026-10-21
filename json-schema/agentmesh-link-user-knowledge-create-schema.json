@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-user-knowledge-create-schema.json",
+  "title": "UserKnowledgeCreate",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-user-knowledge-api-openapi.yml#/components/schemas/UserKnowledgeCreate",
+  "properties": {
+    "agent_uid": {
+      "type": "string",
+      "title": "Agent Uid"
+    },
+    "problem": {
+      "type": "string",
+      "title": "Problem"
+    },
+    "solution": {
+      "type": "string",
+      "title": "Solution"
+    },
+    "environment": {
+      "type": "string",
+      "title": "Environment",
+      "default": ""
+    },
+    "evidence": {
+      "type": "string",
+      "title": "Evidence",
+      "default": ""
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Tags",
+      "default": []
+    },
+    "source_model": {
+      "type": "string",
+      "title": "Source Model",
+      "default": "unknown"
+    },
+    "confidence": {
+      "type": "number",
+      "title": "Confidence",
+      "default": 0.5
+    }
+  },
+  "type": "object",
+  "required": [
+    "agent_uid",
+    "problem",
+    "solution"
+  ]
+}

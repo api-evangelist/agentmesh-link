@@ -1,3 +1,22 @@
+generated: '2026-10-20'
+method: searched
+source:
+- https://a2aregistry.org/api/agents
+- https://zapier.com/apps/agentmesh-link/integrations
+- https://zapier.com/apps/agentmesh/integrations
+- https://n8n.io/integrations/agentmesh-link/
+- https://composio.dev/toolkits/agentmesh-link
+- https://monid.ai/tools/agentmesh-link
+checked:
+- https://a2aregistry.org/api/agents
+- https://registry.modelcontextprotocol.io/v0/servers
+- https://composio.dev/toolkits/agentmesh-link
+- https://monid.ai/tools/agentmesh-link
+- https://n8n.io/integrations/agentmesh-link/
+- https://zapier.com/apps/agentmesh-link/integrations
+- https://zapier.com/apps/agentmesh/integrations
+summary: null
+marketplace_apps: []
 edges:
 - partner_name: MCP Registry
   partner: mcp
@@ -99,10 +118,4 @@ edges:
     detected: '2026-10-19'
   detected_by: sweep-ai-agents.py
   first_seen: '2026-10-15'
-generated: '2026-10-14'
-method: searched
-checked:
-- https://a2aregistry.org/api/agents
-- https://registry.modelcontextprotocol.io/v0/servers
-source:
-- https://a2aregistry.org/api/agents
+templates: []

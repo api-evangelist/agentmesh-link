@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-api-client-create-schema.json",
+  "title": "ApiClientCreate",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-admin-api-openapi.yml#/components/schemas/ApiClientCreate",
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Name"
+    },
+    "plan": {
+      "type": "string",
+      "title": "Plan",
+      "default": "free"
+    }
+  },
+  "type": "object",
+  "required": [
+    "name"
+  ]
+}

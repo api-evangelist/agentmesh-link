@@ -105,6 +105,15 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     AgentMessageCreate:
       properties:
         receiver_uid:
@@ -127,15 +136,6 @@ components:
       - receiver_uid
       - body
       title: AgentMessageCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

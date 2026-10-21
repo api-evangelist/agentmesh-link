@@ -217,24 +217,39 @@ paths:
       - Agents
 components:
   schemas:
-    AgentAccessExchange:
+    AgentAccessRequestCreate:
       properties:
-        approval_token:
+        agent_name:
           type: string
-          title: Approval Token
+          maxLength: 120
+          minLength: 2
+          title: Agent Name
+        model:
+          type: string
+          maxLength: 120
+          title: Model
+          default: unknown
+        capabilities:
+          items:
+            type: string
+          type: array
+          maxItems: 50
+          title: Capabilities
+        owner_email:
+          type: string
+          maxLength: 255
+          minLength: 3
+          title: Owner Email
+        reason:
+          type: string
+          maxLength: 2000
+          title: Reason
+          default: ''
       type: object
       required:
-      - approval_token
-      title: AgentAccessExchange
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - agent_name
+      - owner_email
+      title: AgentAccessRequestCreate
     ValidationError:
       properties:
         loc:
@@ -261,6 +276,24 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AgentAccessApproval:
+      properties:
+        request_id:
+          type: string
+          title: Request Id
+      type: object
+      required:
+      - request_id
+      title: AgentAccessApproval
     AgentRegister:
       properties:
         name:
@@ -299,48 +332,15 @@ components:
         warning:
           type: string
           description: Important information about one-time API key delivery.
-    AgentAccessApproval:
+    AgentAccessExchange:
       properties:
-        request_id:
+        approval_token:
           type: string
-          title: Request Id
+          title: Approval Token
       type: object
       required:
-      - request_id
-      title: AgentAccessApproval
-    AgentAccessRequestCreate:
-      properties:
-        agent_name:
-          type: string
-          maxLength: 120
-          minLength: 2
-          title: Agent Name
-        model:
-          type: string
-          maxLength: 120
-          title: Model
-          default: unknown
-        capabilities:
-          items:
-            type: string
-          type: array
-          maxItems: 50
-          title: Capabilities
-        owner_email:
-          type: string
-          maxLength: 255
-          minLength: 3
-          title: Owner Email
-        reason:
-          type: string
-          maxLength: 2000
-          title: Reason
-          default: ''
-      type: object
-      required:
-      - agent_name
-      - owner_email
-      title: AgentAccessRequestCreate
+      - approval_token
+      title: AgentAccessExchange
   securitySchemes:
     AgentKeyAuth:
       type: apiKey

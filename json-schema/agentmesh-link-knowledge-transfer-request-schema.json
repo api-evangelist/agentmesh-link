@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-knowledge-transfer-request-schema.json",
+  "title": "KnowledgeTransferRequest",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-knowledge-v90-api-openapi.yml#/components/schemas/KnowledgeTransferRequest",
+  "properties": {
+    "sender_uid": {
+      "type": "string",
+      "title": "Sender Uid"
+    },
+    "receiver_uid": {
+      "type": "string",
+      "title": "Receiver Uid"
+    },
+    "package": {
+      "$ref": "#/$defs/KnowledgePackage"
+    }
+  },
+  "type": "object",
+  "required": [
+    "sender_uid",
+    "receiver_uid",
+    "package"
+  ],
+  "$defs": {
+    "KnowledgePackage": {
+      "properties": {
+        "problem": {
+          "type": "string",
+          "title": "Problem"
+        },
+        "solution": {
+          "type": "string",
+          "title": "Solution"
+        },
+        "environment": {
+          "type": "string",
+          "title": "Environment",
+          "default": ""
+        },
+        "evidence": {
+          "type": "string",
+          "title": "Evidence",
+          "default": ""
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Tags",
+          "default": []
+        },
+        "source_agent": {
+          "type": "string",
+          "title": "Source Agent",
+          "default": "unknown"
+        },
+        "source_model": {
+          "type": "string",
+          "title": "Source Model",
+          "default": "unknown"
+        },
+        "confidence": {
+          "type": "number",
+          "title": "Confidence",
+          "default": 0.5
+        },
+        "package_version": {
+          "type": "string",
+          "title": "Package Version",
+          "default": "1.0"
+        }
+      },
+      "type": "object",
+      "required": [
+        "problem",
+        "solution"
+      ],
+      "title": "KnowledgePackage",
+      "description": "Portable representation of AgentMesh knowledge.\n\nThis object deliberately has no database, FastAPI or Docker dependency.\nIt can therefore be exchanged between agents independently of the\nAgentMesh instance that created it."
+    }
+  }
+}

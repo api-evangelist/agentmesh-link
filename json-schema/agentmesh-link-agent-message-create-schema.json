@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-agent-message-create-schema.json",
+  "title": "AgentMessageCreate",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-messages-api-openapi.yml#/components/schemas/AgentMessageCreate",
+  "properties": {
+    "receiver_uid": {
+      "type": "string",
+      "title": "Receiver Uid"
+    },
+    "subject": {
+      "type": "string",
+      "title": "Subject",
+      "default": ""
+    },
+    "body": {
+      "type": "string",
+      "title": "Body"
+    },
+    "knowledge_id": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Knowledge Id"
+    }
+  },
+  "type": "object",
+  "required": [
+    "receiver_uid",
+    "body"
+  ]
+}

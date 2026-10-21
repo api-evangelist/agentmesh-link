@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/agentmesh-link/main/json-schema/agentmesh-link-agent-access-request-create-schema.json",
+  "title": "AgentAccessRequestCreate",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/agentmesh-link-agents-api-openapi.yml#/components/schemas/AgentAccessRequestCreate",
+  "properties": {
+    "agent_name": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Agent Name"
+    },
+    "model": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Model",
+      "default": "unknown"
+    },
+    "capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "maxItems": 50,
+      "title": "Capabilities"
+    },
+    "owner_email": {
+      "type": "string",
+      "maxLength": 255,
+      "minLength": 3,
+      "title": "Owner Email"
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 2000,
+      "title": "Reason",
+      "default": ""
+    }
+  },
+  "type": "object",
+  "required": [
+    "agent_name",
+    "owner_email"
+  ]
+}
