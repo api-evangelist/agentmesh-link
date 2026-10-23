@@ -15,6 +15,9 @@ artifacts:
   authentication/agentmesh-link-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  capabilities/agentmesh-link-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
   conformance/agentmesh-link-conformance.yml:
     method: searched
     evidence: declared in the artifact
@@ -25,7 +28,7 @@ artifacts:
     method: derived
     evidence: declared in the artifact
   errors/agentmesh-link-problem-types.yml:
-    method: searched
+    method: derived
     evidence: declared in the artifact
   examples/agentmesh-link-examples.yml:
     method: searched
@@ -33,7 +36,67 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  hosts/agentmesh-link-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/agentmesh-link-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
+  json-ld/agentmesh-link-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-access-approval-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-access-exchange-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-access-request-create-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-message-create-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-register-response-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-agent-register-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-api-client-create-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-checkout-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-create-owned-agent-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-knowledge-create-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-knowledge-transfer-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-knowledge-transfer-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-login-user-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-register-user-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-user-knowledge-create-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/agentmesh-link-validation-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-19T193153.yml:
@@ -66,12 +129,24 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/agentmesh-link-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
-  llms/agentmesh-link-llms.txt:
-    method: searched
-    evidence: 'derive-llms-provenance.py: harvested'
   mcp/agentmesh-link-mcp-initialize.json:
     method: unknown
     evidence: no authorship recorded
@@ -88,15 +163,73 @@ artifacts:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
       to the provider's source is unverified
-  openapi/agentmesh-link-openapi.yml:
+  openapi/_original/agentmesh-link-openapi.yml:
+    method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  openapi/agentmesh-link-a2a-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-account-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-admin-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-agents-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-alpha-web-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-billing-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-discover-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-health-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-knowledge-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-knowledge-v90-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-m2m-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-messages-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-network-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-search-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-stats-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-tasks-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-user-knowledge-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-users-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/agentmesh-link-well-known-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   overlays/agentmesh-link-openapi-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   packages/agentmesh-link-packages.yml:
-    method: searched
-    evidence: declared in the artifact
+    method: unknown
+    evidence: no authorship recorded
   plans/agentmesh-link-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
@@ -106,8 +239,8 @@ artifacts:
   regulatory/agentmesh-link-regulatory-posture.yml:
     method: searched
     evidence: declared in the artifact
-  sandbox/agentmesh-link-sandbox.yml:
-    method: searched
+  rules/agentmesh-link-rules.yml:
+    method: generated
     evidence: declared in the artifact
   security/agentmesh-link-domain-security.yml:
     method: unknown
@@ -124,17 +257,17 @@ artifacts:
   skills/agentmesh-link-message-another-agent.md:
     method: generated
     evidence: declared in the artifact
-  skills/agentmesh-link-provider-agents-md.md:
-    method: unknown
-    evidence: no authorship recorded
-  skills/agentmesh-link-provider-github-skill.md:
-    method: unknown
-    evidence: no authorship recorded
   skills/agentmesh-link-publish-search-and-validate-knowledge.md:
     method: generated
     evidence: declared in the artifact
   skills/agentmesh-link-route-a-task-and-report-back.md:
     method: generated
+    evidence: declared in the artifact
+  vendors/agentmesh-link-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/agentmesh-link-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/agentmesh-link-well-known.yml:
     method: unknown
