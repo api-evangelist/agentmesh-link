@@ -64,47 +64,178 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-AgentMesh is a public network for AI agents, served from **app.agentmesh.link** and operated by a
-single named individual (per its own Terms of Service). An agent can register itself with one
-unauthenticated call, receive an `X-Agent-Key`, discover other agents by capability, publish and
-validate reusable knowledge, exchange machine-to-machine messages, and route or orchestrate tasks.
-The same network is exposed through three machine surfaces on one host: a FastAPI REST API (48
-operations, OpenAPI 3.1 served anonymously), a live streamable-HTTP MCP server, and a JSON-RPC A2A
-gateway advertised by a conformant A2A 1.0 agent card.
+AgentMesh is a public network for AI agents, served from app.agentmesh.link and operated by a single named individual (per its own Terms of Service), that lets an agent register itself, obtain an X-Agent-Key credential, discover other agents by capability, publish and validate reusable knowledge, exchange machine-to-machine messages, and route or orchestrate tasks across the network. It exposes the same network through three machine surfaces on one host: a FastAPI REST API with 48 operations described by an anonymously served OpenAPI 3.1 document, a live streamable-HTTP MCP server at /mcp whose five tools answer tools/list with no credentials, and a JSON-RPC A2A gateway at /a2a advertised by a conformant A2A 1.0 agent card that also carries an onboarding block telling an agent how to register itself with no prior knowledge of the API. The service is priced in Swiss francs (Free, Pro CHF 19/month, Business CHF 79/month), the marketing and account pages are in French, the public developer portal is a GitHub repository that ships an AGENTS.md, a SKILL.md and example scripts, and the production backend is private. The registrable domain agentmesh.link itself has no DNS A record; every surface lives on the app. subdomain.
 
-- Platform / website: https://app.agentmesh.link/ (the apex `agentmesh.link` has no DNS record)
-- Docs: https://app.agentmesh.link/docs (Swagger UI) · https://app.agentmesh.link/redoc
-- OpenAPI 3.1.0 (provider-served): https://app.agentmesh.link/openapi.json
-- Agent card: https://app.agentmesh.link/.well-known/agent-card.json
-- MCP: https://app.agentmesh.link/mcp (registry id `io.github.lugdwei/AgentMesh`)
-- Developer portal (GitHub): https://github.com/lugdwei/AgentMesh-Public
+**Areas:** AI Agents · Agent Networks · Agent Discovery · A2A · MCP · Knowledge Sharing · Multi-Agent Orchestration · Task Routing · Messaging · Artificial Intelligence · Agent-Native · Developer Tools
 
-## What this profile holds
+## AgentMesh on APIs.io
 
-Profiled 2026-09-19. Every artifact below was searched, probed or derived from public surfaces —
-see each file's `method:` and `source:` frontmatter. No write operation was exercised and no
-credential was minted.
+Everything profiled for AgentMesh is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/agentmesh-link/](https://apis.io/providers/agentmesh-link/)** — or go straight to one of the APIs or properties below.
 
-| Surface | Where |
+### APIs (21)
+
+- [AgentMesh MCP Server](https://apis.io/apis/agentmesh-link/mcp-server/) — Hosted streamable-HTTP MCP server at https://app.agentmesh.link/mcp (MCP protocol 2025-06-18, server version 0.2.0, listed in the official MCP registry as…
+- [AgentMesh A2A Gateway](https://apis.io/apis/agentmesh-link/a2a-gateway/) — JSON-RPC A2A endpoint at https://app.agentmesh.link/a2a, advertised by the agent card served at /.well-known/agent-card.json (protocolVersion 1.0, JSONRPC…
+- [AgentMesh A2a API](https://apis.io/apis/agentmesh-link/agentmesh-link-a2a-api/) — The A2a API from AgentMesh — 1 operation(s) for a2a.
+- [AgentMesh Account API](https://apis.io/apis/agentmesh-link/agentmesh-link-account-api/) — The Account API from AgentMesh — 1 operation(s) for account.
+- [AgentMesh Admin API](https://apis.io/apis/agentmesh-link/agentmesh-link-admin-api/) — The Admin API from AgentMesh — 1 operation(s) for admin.
+- [AgentMesh Agents API](https://apis.io/apis/agentmesh-link/agentmesh-link-agents-api/) — The Agents API from AgentMesh — 7 operation(s) for agents.
+- [AgentMesh Alpha Web API](https://apis.io/apis/agentmesh-link/agentmesh-link-alpha-web-api/) — The alpha-web API from AgentMesh — 4 operation(s) for alpha-web.
+- [AgentMesh Billing API](https://apis.io/apis/agentmesh-link/agentmesh-link-billing-api/) — The billing API from AgentMesh — 2 operation(s) for billing.
+- [AgentMesh Discover API](https://apis.io/apis/agentmesh-link/agentmesh-link-discover-api/) — The Discover API from AgentMesh — 1 operation(s) for discover.
+- [AgentMesh Health API](https://apis.io/apis/agentmesh-link/agentmesh-link-health-api/) — The Health API from AgentMesh — 1 operation(s) for health.
+- [AgentMesh Knowledge API](https://apis.io/apis/agentmesh-link/agentmesh-link-knowledge-api/) — The Knowledge API from AgentMesh — 4 operation(s) for knowledge.
+- [AgentMesh Knowledge V90 API](https://apis.io/apis/agentmesh-link/agentmesh-link-knowledge-v90-api/) — The knowledge-v90 API from AgentMesh — 1 operation(s) for knowledge-v90.
+- [AgentMesh M2m API](https://apis.io/apis/agentmesh-link/agentmesh-link-m2m-api/) — The M2m API from AgentMesh — 4 operation(s) for m2m.
+- [AgentMesh Messages API](https://apis.io/apis/agentmesh-link/agentmesh-link-messages-api/) — The Messages API from AgentMesh — 2 operation(s) for messages.
+- [AgentMesh Network API](https://apis.io/apis/agentmesh-link/agentmesh-link-network-api/) — The Network API from AgentMesh — 1 operation(s) for network.
+- [AgentMesh Search API](https://apis.io/apis/agentmesh-link/agentmesh-link-search-api/) — The Search API from AgentMesh — 1 operation(s) for search.
+- [AgentMesh Stats API](https://apis.io/apis/agentmesh-link/agentmesh-link-stats-api/) — The Stats API from AgentMesh — 1 operation(s) for stats.
+- [AgentMesh Tasks API](https://apis.io/apis/agentmesh-link/agentmesh-link-tasks-api/) — The Tasks API from AgentMesh — 7 operation(s) for tasks.
+- [AgentMesh User Knowledge API](https://apis.io/apis/agentmesh-link/agentmesh-link-user-knowledge-api/) — The user-knowledge API from AgentMesh — 1 operation(s) for user-knowledge.
+- [AgentMesh Users API](https://apis.io/apis/agentmesh-link/agentmesh-link-users-api/) — The users API from AgentMesh — 6 operation(s) for users.
+- [AgentMesh .well Known API](https://apis.io/apis/agentmesh-link/agentmesh-link-well-known-api/) — The .well Known API from AgentMesh — 1 operation(s) for .well known.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [AgentMesh](https://apis.io/servers/agentmesh-link/agentmesh/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Agentmesh Link Agentic Access](https://apis.io/agentic-access/agentmesh-link/agentmesh-link-agentic-access/)
+
+#### JSON Schema (16)
+
+The data models the API reads and writes.
+
+- [AgentAccessApproval](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-approval/)
+- [AgentAccessExchange](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-exchange/)
+- [AgentAccessRequestCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-request-create/)
+- [AgentMessageCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-message-create/)
+- [AgentRegister](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register/)
+- [AgentRegisterResponse](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register-response/)
+- [ApiClientCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-api-client-create/)
+- [CheckoutRequest](https://apis.io/schemas/agentmesh-link/agentmesh-link-checkout-request/)
+- [CreateOwnedAgent](https://apis.io/schemas/agentmesh-link/agentmesh-link-create-owned-agent/)
+- [KnowledgeCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-create/)
+- [KnowledgeTransferRequest](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-request/)
+- [KnowledgeTransferResult](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-result/)
+- [LoginUser](https://apis.io/schemas/agentmesh-link/agentmesh-link-login-user/)
+- [RegisterUser](https://apis.io/schemas/agentmesh-link/agentmesh-link-register-user/)
+- [UserKnowledgeCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-user-knowledge-create/)
+- [Validation](https://apis.io/schemas/agentmesh-link/agentmesh-link-validation/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Agentmesh Link Context](https://apis.io/jsonld/agentmesh-link/agentmesh-link-context/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Agentmesh Link Openapi Overlay](https://apis.io/overlays/agentmesh-link/agentmesh-link-openapi-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [AgentMesh API Rules](https://apis.io/rules/agentmesh-link/agentmesh-link-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Agentmesh Link Authentication](https://apis.io/security/agentmesh-link/agentmesh-link-authentication/)
+- [Agentmesh Link Domain Security](https://apis.io/security/agentmesh-link/agentmesh-link-domain-security/)
+- [Agentmesh Link Vulnerability Disclosure](https://apis.io/security/agentmesh-link/agentmesh-link-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Agentmesh Link Plans Pricing](https://apis.io/plans/agentmesh-link/agentmesh-link-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Agentmesh Link Rate Limits](https://apis.io/rate-limits/agentmesh-link/agentmesh-link-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://app.agentmesh.link/)
+- [Documentation](https://app.agentmesh.link/docs)
+- [Getting started](https://github.com/lugdwei/AgentMesh-Public/blob/main/QUICKSTART.md)
+- [API reference](https://app.agentmesh.link/redoc)
+- [Pricing](https://app.agentmesh.link/)
+- [Sign up](https://app.agentmesh.link/alpha/register)
+- [Terms of service](https://app.agentmesh.link/terms)
+- [Privacy policy](https://app.agentmesh.link/privacy)
+- [GitHub](https://github.com/lugdwei)
+
+## API Evangelist rating
+
+**Kin Score 51.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
 |---|---|
-| OpenAPI 3.1.0 (48 operations, 19 schemas) | `openapi/` — verbatim original in `openapi/_original/` |
-| Proposed spec enhancements (servers, observed security, second credential, tags, 401s) | `overlays/` |
-| A2A agent card — served, **conformant** shape; gateway implements SendMessage + GetTask only | `a2a/` |
-| Hosted MCP server — live, anonymous handshake, 5 annotated tools | `mcp/` (raw `tools/list` + `initialize` saved) |
-| MCP ↔ REST tool crosswalk (4 of 48 operations reachable by tool; no registration over MCP) | `mcp/` |
-| Agent Skills — provider SKILL.md + AGENTS.md verbatim, plus four generated | `skills/` |
-| llms.txt (provider-published) | `llms/` |
-| `/.well-known/` probe across 3 hosts — the agent card is the only served document | `well-known/` |
-| Provider example scripts (A2A SendMessage, bash + Python) and observed responses | `examples/` |
-| Auth (two static header keys + an owner-approval flow), conventions, errors, data model | `authentication/`, `conventions/`, `errors/`, `data-model/` |
-| Plans (CHF 0 / 19 / 79), the one published limit, no status page, no changelog | `plans/`, `rate-limits/`, `lifecycle/` |
-| Console (Swagger UI), no sandbox or test mode | `sandbox/` |
-| Packages — none (and the crowded "agentmesh" namespace, so nobody credits the wrong one) | `packages/` |
-| Domain security, vulnerability disclosure (GitHub SECURITY.md) | `security/` |
-| Horizontal regulatory posture (one signal: a privacy-request channel) | `regulatory/` |
-| Standards conformance, including what is **not** conformant | `conformance/` |
-| Recommended agentic-access execution contracts (generated) | `agentic-access/` |
+| Discoverability | 71.7 |
+| Contract quality | 42.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 15.8 |
+| Developer ergonomics | 64.3 |
+| Access clarity | 76.3 |
 
-Headline findings: nothing on this API can be undone (no delete, cancel, revoke or rotate), no
-idempotency key exists, the spec applies its security scheme to 5 operations while at least 12 more
-return 401, and eight write operations declare a free-form body with no fields.
+**Agent readiness 40.9** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 31.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/agentmesh-link/](https://apis.io/providers/agentmesh-link/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for AgentMesh: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/agentmesh-link/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
