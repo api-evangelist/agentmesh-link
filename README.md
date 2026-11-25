@@ -110,40 +110,40 @@ Model Context Protocol servers that expose the API to agents.
 
 Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Agentmesh Link Agentic Access](https://apis.io/agentic-access/agentmesh-link/agentmesh-link-agentic-access/)
+- [AgentMesh Agentic Access](https://apis.io/agentic-access/agentmesh-link/agentmesh-link-agentic-access/)
 
 #### JSON Schema (16)
 
 The data models the API reads and writes.
 
-- [AgentAccessApproval](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-approval/)
-- [AgentAccessExchange](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-exchange/)
-- [AgentAccessRequestCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-request-create/)
-- [AgentMessageCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-message-create/)
-- [AgentRegister](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register/)
-- [AgentRegisterResponse](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register-response/)
-- [ApiClientCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-api-client-create/)
-- [CheckoutRequest](https://apis.io/schemas/agentmesh-link/agentmesh-link-checkout-request/)
-- [CreateOwnedAgent](https://apis.io/schemas/agentmesh-link/agentmesh-link-create-owned-agent/)
-- [KnowledgeCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-create/)
-- [KnowledgeTransferRequest](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-request/)
-- [KnowledgeTransferResult](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-result/)
-- [LoginUser](https://apis.io/schemas/agentmesh-link/agentmesh-link-login-user/)
-- [RegisterUser](https://apis.io/schemas/agentmesh-link/agentmesh-link-register-user/)
-- [UserKnowledgeCreate](https://apis.io/schemas/agentmesh-link/agentmesh-link-user-knowledge-create/)
-- [Validation](https://apis.io/schemas/agentmesh-link/agentmesh-link-validation/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-approval/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-exchange/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-access-request-create/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-message-create/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-agent-register-response/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-api-client-create/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-checkout-request/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-create-owned-agent/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-create/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-request/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-knowledge-transfer-result/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-login-user/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-register-user/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-user-knowledge-create/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/schemas/agentmesh-link/agentmesh-link-validation/)
 
 #### JSON-LD (1)
 
 Linked-data contexts for the provider's vocabulary.
 
-- [Agentmesh Link Context](https://apis.io/jsonld/agentmesh-link/agentmesh-link-context/)
+- [Moved to /providers/agentmesh-link/](https://apis.io/jsonld/agentmesh-link/agentmesh-link-context/)
 
 #### Overlays (1)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Agentmesh Link Openapi Overlay](https://apis.io/overlays/agentmesh-link/agentmesh-link-openapi-overlay/)
+- [AgentMesh Openapi Overlay](https://apis.io/overlays/agentmesh-link/agentmesh-link-openapi-overlay/)
 
 #### Governance rules (1)
 
@@ -155,21 +155,28 @@ Spectral rulesets for the provider's contracts.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Agentmesh Link Authentication](https://apis.io/security/agentmesh-link/agentmesh-link-authentication/)
-- [Agentmesh Link Domain Security](https://apis.io/security/agentmesh-link/agentmesh-link-domain-security/)
-- [Agentmesh Link Vulnerability Disclosure](https://apis.io/security/agentmesh-link/agentmesh-link-vulnerability-disclosure/)
+- [AgentMesh Authentication](https://apis.io/security/agentmesh-link/agentmesh-link-authentication/)
+- [AgentMesh Domain Security](https://apis.io/security/agentmesh-link/agentmesh-link-domain-security/)
+- [AgentMesh Vulnerability Disclosure](https://apis.io/security/agentmesh-link/agentmesh-link-vulnerability-disclosure/)
 
-#### Plans and pricing (1)
+#### Plans and pricing (2)
 
 Published plans, tiers and prices.
 
-- [Agentmesh Link Plans Pricing](https://apis.io/plans/agentmesh-link/agentmesh-link-plans-pricing/)
+- [AgentMesh Plans Pricing](https://apis.io/plans/agentmesh-link/agentmesh-link-plans-pricing/)
+- [AgentMesh Price Estimates](https://apis.io/plans/agentmesh-link/agentmesh-link-price-estimates/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Agentmesh Link Rate Limits](https://apis.io/rate-limits/agentmesh-link/agentmesh-link-rate-limits/)
+- [AgentMesh Rate Limits](https://apis.io/rate-limits/agentmesh-link/agentmesh-link-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [AgentMesh Finops](https://apis.io/finops/agentmesh-link/agentmesh-link-finops/)
 
 ## Where to find this API
 
@@ -187,18 +194,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 51.8** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 50.3** — developing · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 71.7 |
 | Contract quality | 42.0 |
-| Contract governance | 18.2 |
-| Operational transparency | 15.8 |
+| Contract governance | 31.8 |
+| Operational transparency | 14.3 |
 | Developer ergonomics | 64.3 |
-| Access clarity | 76.3 |
+| Access clarity | 61.7 |
 
-**Agent readiness 40.9** — agent-ready (gated down from agent-native)
+**Agent readiness 40.0** — agent-ready (gated down from agent-native)
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -223,6 +230,10 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | na |
 | Operation Distinctiveness | distinct |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
 **Regulatory alignment 31.8** — Horizontal (data, software, accessibility, platform)
 
